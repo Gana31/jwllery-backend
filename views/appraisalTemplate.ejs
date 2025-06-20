@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Gold Loan Appraisal</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+    .a4 {
+      width: 794px; /* A4 at 96dpi */
+      min-height: 1123px;
+      margin: 0 auto;
+      background: #fff;
+      box-sizing: border-box;
+    }
+    @media (max-width: 800px) {
+      .a4 {
+        width: 100vw;
+        min-width: 100vw;
+      }
+    }
+    .header, .footer { width: 100%; }
+    .header-table { width: 100%; }
+    .header-table td { vertical-align: top; }
+    .logo { width: 80px; }
+    .company-logo { width: 120px; }
+    .title { text-align: center; font-size: 18px; font-weight: bold; margin: 10px 0; }
+    .info-table, .ornament-table, .valuation-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .info-table td { padding: 2px 5px; }
+    .ornament-table th, .ornament-table td { border: 1px solid #000; padding: 4px 6px; font-size: 13px; }
+    .ornament-table th { background: #f0f0f0; }
+    .valuation-table td { padding: 2px 5px; }
+    .photo { width: 160px; border: 1px solid #ccc; margin-top: 10px; }
+    .footer { margin-top: 20px; font-size: 12px; }
+    .sign { margin-top: 30px; }
+    .center { text-align: center; }
+    .right { text-align: right; }
+    .bold { font-weight: bold; }
+    .small { font-size: 12px; }
+    .valuation-table { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <div class="a4">
+    <!-- Header -->
+    <table class="header-table">
+      <tr>
+        <td><img src="<%= bankLogo %>" class="logo" /></td>
+        <td>
+          <div class="bold">The Branch Manager<br>
+            <%= bankName %><br>
+            <%= branchName %> (<%= branchCode %>)
+          </div>
+          <table class="info-table small">
+            <tr>
+              <td>Customer Name:</td><td class="bold"><%= customerName %></td>
+              <td>Address:</td><td><%= address %></td>
+            </tr>
+            <tr>
+              <td>Mobil no.:</td><td><%= phone %></td>
+              <td>Customer A/c No.:</td><td><%= accountNumber %></td>
+            </tr>
+            <tr>
+              <td>Pouch No.:</td><td><%= pouchNo %></td>
+              <td></td><td></td>
+            </tr>
+          </table>
+        </td>
+        <td class="right">
+          <img src="<%= companyLogo %>" class="company-logo" /><br>
+          <span class="small"><%= companyName %></span><br>
+          <span class="small"><%= companyAddress %></span><br>
+          <span class="small">Phone: <%= companyPhone %></span><br>
+          <span class="small">Email: <%= companyEmail %></span><br>
+          <span class="small">SBI A/c no.: <%= companyAccount %></span>
+        </td>
+      </tr>
+    </table>
+    <div class="title">Details of Gold Ornaments kept with the bank as under</div>
+    <!-- Ornaments Table -->
+    <table class="ornament-table">
+      <tr>
+        <th>Sr. No</th>
+        <th>Description of Gold Ornaments</th>
+        <th>No Of Units</th>
+        <th>Purity in Carat</th>
+        <th>Gross Weight in Grams</th>
+        <th>Net Weight (Gross Weight less Vaux, Stones, dust etc) Grams</th>
+        <th>Gold Rate Per Carat 22/20/18</th>
+        <th>Approx Value In Rupees</th>
+      </tr>
+      <% ornaments.forEach(function(item, idx) { %>
+      <tr>
+        <td class="center"><%= idx+1 %></td>
+        <td><%= item.description %></td>
+        <td class="center"><%= item.units %></td>
+        <td class="center"><%= item.purity %></td>
+        <td class="center"><%= item.grossWeight %></td>
+        <td class="center"><%= item.netWeight %></td>
+        <td class="center"><%= item.goldRate %></td>
+        <td class="right"><%= item.approxValue %></td>
+      </tr>
+      <% }) %>
+      <!-- Add empty rows if needed for layout -->
+      <% for(let i=ornaments.length; i<6; i++) { %>
+      <tr>
+        <td class="center"><%= i+1 %></td>
+        <td colspan="7">&nbsp;</td>
+      </tr>
+      <% } %>
+      <tr>
+        <td colspan="2" class="right bold">TOTAL</td>
+        <td class="center bold"><%= totalUnits %></td>
+        <td></td>
+        <td class="center bold"><%= totalGrossWeight %></td>
+        <td class="center bold"><%= totalNetWeight %></td>
+        <td></td>
+        <td class="right bold"><%= totalValue %></td>
+      </tr>
+    </table>
+    <!-- Valuation Table -->
+    <table class="valuation-table small">
+      <tr>
+        <td>Valuation</td>
+        <td class="bold">₹ <%= totalValue %></td>
+        <td>65%</td>
+        <td>₹ <%= valuation65 %></td>
+        <td>70%</td>
+        <td>₹ <%= valuation70 %></td>
+        <td>75%</td>
+        <td>₹ <%= valuation75 %></td>
+      </tr>
+    </table>
+    <div class="footer">
+      <div>Method(s) Used for Purity Testing: <%= purityMethods %></div>
+      <div>
+        We solemnly declare that weight, Purity of the gold ornaments/precious stones indicated above are correct and I understand to indemnify the Bank against any loss it may sustain on account of any inaccuracy in the above appraisal.
+      </div>
+      <div>
+        <span>Place: <%= branchName %> (<%= branchCode %>)</span>
+        <span style="float:right">Date: <%= date %></span>
+      </div>
+      <div class="sign">
+        <span>Authorised Signatory</span>
+        <span style="float:right">Name And Signature Of The Borrower</span>
+      </div>
+      <div>
+        <img src="<%= jewelleryPhoto %>" class="photo" />
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

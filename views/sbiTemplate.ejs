@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBI Gold Loan Receipt</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 16px;
+            line-height: 1;
+            color: #000;
+            background: white;
+        }
+
+        .receipt-container {
+            width: 100%;
+            max-width: 210mm;
+            margin: 5px auto;
+            background: white;
+            border: 2px solid #000;
+            padding: 8px;
+        }
+
+        /* ROW 1: Three columns - Bank Logo | Customer Details | Shop Details */
+        .row-1 {
+            display: flex;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 1px;
+            align-items: flex-end;
+        }
+
+        .bank-section {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+
+        }
+
+        .sbi-logo {
+
+            width: 100px;
+            height: 70px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            overflow: hidden;
+            /* ensures image doesn’t spill */
+            background-color: transparent;
+            margin-right: 10px;
+        }
+
+        .sbi-logo img {
+            width: 100%;
+            height: 70%;
+            object-fit: contain;
+            /* keep aspect ratio */
+
+        }
+
+        .bank-info {
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .bank-info div:first-child {
+            font-weight: bold;
+        }
+
+        .customer-section {
+            flex: 1;
+            align-items: flex-end;
+            padding: 0 15px;
+            font-size: 12px;
+        }
+
+        .customer-section div {
+            margin-bottom: 2px;
+        }
+
+        .shop-section {
+            flex: 1;
+            text-align: right;
+            position: relative;
+        }
+
+        .shop-header {
+
+            color: black;
+            padding: 4px;
+            text-align: right;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .shop-title {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .shop-subtitle {
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .shop-details {
+            font-size: 10px;
+            text-align: right;
+            line-height: 1.2;
+            padding: 5px;
+        }
+
+        /* ROW 2: Full width paragraph */
+        .row-2 {
+            width: 100%;
+            margin: 15px 0;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* TABLE SECTION */
+        .table-section {
+            margin: 15px 0;
+        }
+
+        .table-header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gold-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .gold-table th,
+        .gold-table td {
+            border: 1px solid #000;
+            padding: 3px 4px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .gold-table th {
+            background: #f0f0f0;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .gold-table td:nth-child(2) {
+            text-align: left;
+            padding-left: 6px;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background: #f9f9f9;
+        }
+        .gold-table td:last-child,
+.gold-table th:last-child {
+    text-align: right;
+    padding-right: 8px;
+}
+        /* ROW 3: Two columns - Left (Valuation) | Right (Image) */
+        .row-3 {
+            display: flex;
+            margin: 15px 0;
+            gap: 20px;
+        }
+
+        .left-section {
+            flex: 1;
+        }
+
+        .method-text {
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .declaration {
+            font-size: 12px;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .valuation-table {
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .valuation-table td {
+            border: 1px solid #000;
+            padding: 3px 8px;
+        }
+
+        .valuation-table td:first-child {
+            background: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+            width: 60px;
+        }
+
+        .place-date {
+            font-size: 10px;
+            margin-top: 10px;
+        }
+
+        .right-section {
+            flex: 0 0 150px;
+            text-align: center;
+        }
+
+        .jewellery-image {
+            width: 120px;
+            height: 80px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            margin: 0 auto 10px;
+        }
+
+        .jewellery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .jeweller-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.jeweller-photo {
+    width: 30px; /* or 40px, depending on your preference */
+    height: 30px;
+    object-fit: cover;
+    border-radius: 4px; /* optional: rounded corners */
+    border: 1px solid #ccc;
+}
+
+        /* ROW 4: Three columns for signatures */
+        .row-4 {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            font-size: 12px;
+        }
+
+        .signature-column {
+            flex: 1;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        .signature-line {
+            border-top: 1px solid #000;
+            margin-top: 40px;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+
+        .signature-subtitle {
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        .row-2-flex {
+            display: flex;
+            width: 100%;
+
+        }
+
+        .paragraph-section {
+            flex: 3;
+            width: 50%;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .spacer-text {
+            display: inline-block;
+            margin-left: 40px;
+            /* Adjust space as needed */
+        }
+
+        .label-section {
+            flex: 1;
+            width: 20%;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            bottom: 0%;
+            align-items: flex-end;
+            padding-top: 5px;
+        }
+
+        .label-line {
+            margin-bottom: 8px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="receipt-container">
+
+        <!-- ROW 1: Bank Logo | Customer Details | Shop Details -->
+        <div class="row-1">
+            <!-- Left Column: Bank Section -->
+            <div class="bank-section">
+                <div class="sbi-logo">
+                    <img src="https://ganeshtest2.s3.ap-south-1.amazonaws.com/385-3856570_sbi-logo-%5Bstate-bank-of-india-group%5D-vector-eps-free-sbi-logo+(1).png"
+                        alt="" srcset="">
+                </div>
+                <div class="bank-info">
+                    <div>The Branch Manager</div>
+                    <div>State Bank Of India</div>
+                    <div>
+                        <%= branchCode %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Column: Customer Details -->
+            <div class="customer-section">
+                <div>Customer Name: <strong>
+                        <%= customerName %>
+                    </strong> </div>
+                <div>Address: <%= address %>
+                </div>
+                <div>Mobil no.: <%= mobile %>
+                </div>
+                <div>Customer A/c No.: <%= accountNumber %>
+                </div>
+                <div>Pouch No.: <strong>
+                        <%= pouchNumber %>
+                    </strong></div>
+            </div>
+
+            <!-- Right Column: Shop Details -->
+            <div class="shop-section">
+                <div class="shop-header">
+                    <div class="shop-title">
+                        <div class="jeweller-info">
+                            <img class="jeweller-photo" src="<%= jewellerPhoto %>" alt="Jeweller Photo" />
+                            <span><%= jewellerName %></span>
+                        </div>
+                    </div>
+                    <div class="shop-subtitle">
+                        <%= jewellerSubtitle %>
+                    </div>
+                </div>
+                <div class="shop-details">
+                    <%= jewellerAddress %><br>
+                        <%= jewellerPhone %><br>
+                            <%= jewellerEmail %><br>
+                                <strong>
+                                    <%= jewellerAccount %>
+                                </strong><br>
+                                <strong>
+                                    <%= jewellerMembership %>
+                                </strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 2: Full Width Paragraph -->
+        <div class="row-2">
+            <div class="row-2-flex">
+                <!-- Left Column: Paragraph -->
+                <div class="paragraph-section">
+                    <strong>Dear sir,</strong><br>
+                    We hereby certify that <strong>Mr./Mrs. <%= customerName %></strong>
+                    <span class="spacer-text"><strong>S/W/D of</strong></span><br>
+                    
+                    Resident of <strong>
+                        <%= address %>
+                    </strong> who has sought gold loan from the Bank is not my relative and the gold against which the
+                    loan is not purchased from me. The Ornaments/coins have been weighted and 
+                    <% if (apprenticeType === "apprentice") { %>
+                        <strong>appriaised</strong>
+                      <% } else { %>
+                        <strong>Reappriaised</strong>
+                      <% } %> by me on
+                    <strong>
+                        <%= appraisalDate %>
+                    </strong> in the presence of <strong>Shri/Smt</strong><br>
+                    and the exact weight, Purity of the metal and market value of each item as on date are indicate
+                    below:
+                </div>
+
+                <!-- Right Column: Labels -->
+                <div class="label-section">
+                    <div class="label-line"><strong>(Cash in Charge)</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLE SECTION -->
+        <div class="table-section">
+            <div class="table-header">
+                <div>Details of Gold Ornaments kept with the bank are as under</div>
+
+            </div>
+
+            <table class="gold-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Sr. No</th>
+                        <th rowspan="2">Description of Gold Ornaments</th>
+                        <th rowspan="2">No Of Units</th>
+                        <th rowspan="2">Purity in Carat</th>
+                        <th rowspan="2">Gross Weight in Grams</th>
+                        <th>Net Weight (Gross Weight less Vaax, Stones, dust etc) Grams</th>
+                        <th rowspan="2">Gold Rate Per Carat <%= goldRateDate %>
+                        </th>
+                        <th rowspan="2">Approx Value In Rupees</th>
+                    </tr>
+                   
+                </thead>
+                <tbody>
+                    <% goldItems.forEach((item, index)=> { %>
+                        <tr>
+                            <td>
+                                <%= index + 1 %>
+                            </td>
+                            <td>
+                                <%= item.description %>
+                            </td>
+                            <td>
+                                <%= item.units %>
+                            </td>
+                            <td>
+                                <%= item.purity %>
+                            </td>
+                            <td>
+                                <%= item.grossWeight %>
+                            </td>
+                            <td>
+                                <%= item.netWeight %>
+                            </td>
+                            <td>
+                                <%= item.goldRate %>
+                            </td>
+                            <td>
+                                <%= item.approxValue %>
+                            </td>
+                        </tr>
+                        <% }); %>
+
+                            <!-- Empty rows -->
+                            <% for(let i=goldItems.length; i < 10; i++) { %>
+                                <tr>
+
+                                </tr>
+                                <% } %>
+
+                                    <tr class="total-row">
+                                        <td colspan="2"><strong>TOTAL</strong></td>
+                                        <td><strong>
+                                                <%= totalUnits %>
+                                            </strong></td>
+                                        <td></td>
+                                        <td><strong>
+                                                <%= totalGrossWeight %>
+                                            </strong></td>
+                                        <td><strong>
+                                                <%= totalNetWeight %>
+                                            </strong></td>
+                                        <td></td>
+                                        <td><strong>₹ <%= totalValue %></strong></td>
+                                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ROW 3: Valuation Section | Image -->
+        <div class="row-3">
+            <!-- Left Section: Valuation and Text -->
+            <div class="left-section">
+                <div class="method-text">
+                    <strong>Method(s) Used for Purity Testing:</strong>
+                    <%= purityTestMethod %>
+                </div>
+
+                <div class="declaration">
+                    We solemnly declare that weight, Purity of the gold ornaments/precious stones indicated above are
+                    correct and I understand to indemnify the Bank against any loss it may sustain on account of any
+                    inaccuracy in the above appraisal.
+                </div>
+
+                <table class="valuation-table">
+                    <tr>
+                        <td>Valuation</td>
+                        <td>₹ <%= totalValue %>
+                        </td>
+                    </tr>
+                    <% valuations.forEach(val => { %>
+                        <tr>
+                          <td><%= val.percentage %>%</td>
+                          <td>₹ <%= val.amount %></td>
+                        </tr>
+                        <% }); %>
+                </table>
+
+                <div class="place-date">
+                    <strong>Place:</strong>
+                    <%= place %><br>
+                        <strong>Date:</strong>
+                        <%= date %>
+                </div>
+            </div>
+
+            <!-- Right Section: Image -->
+            <div class="right-section">
+                <div class="jewellery-image">
+                    <% if (jewelryImage) { %>
+                        <img src="<%= jewelryImage %>" alt="Gold Jewelry">
+                        <% } else { %>
+                            [Jewelry Image]
+                            <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 4: Three Signature Columns -->
+        <div class="row-4">
+            <div class="signature-column">
+                <div class="signature-line">Authorised Signatory</div>
+                <div class="signature-subtitle">
+                </div>
+            </div>
+
+            <div class="signature-column">
+                <div class="signature-line">
+                    For <%= jewellerName %>
+                </div>
+                <div class="signature-subtitle"></div>
+            </div>
+
+            <div class="signature-column">
+                <div class="signature-line"> For <%= customerName %></div>
+                <div class="signature-subtitle">Name And Signature Of the Borrower</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Goldsmith</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 10px;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+            line-height: 1.2;
+        }
+        
+        .certificate-container {
+            width: 100%;
+            max-width: 8.27in;
+            margin: 0 auto;
+            border: 2px solid #000;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        .header-row {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .header-cell {
+            display: table-cell;
+            vertical-align: top;
+            padding: 5px;
+        }
+        
+        .bank-section {
+            width: 25%;
+            text-align: center;
+        }
+        
+        .bank-logo {
+            width: 80px;
+            height: 60px;
+            margin-bottom: 5px;
+        }
+        .header-row-container{
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bank-name {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .branch-name {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .customer-section {
+            width: 40%;
+            padding-left: 10px;
+        }
+        
+        .customer-row {
+            display: flex;
+            margin-bottom: 3px;
+        }
+        
+        .customer-label {
+            width: 80px;
+            font-weight: bold;
+        }
+        
+        .customer-value {
+            flex: 1;
+        }
+        
+        .center-section {
+            width: 15%;
+            text-align: center;
+        }
+        
+        .beti-bachao-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        
+        .certificate-title {
+            font-weight: bold;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .jeweller-section {
+            width: 20%;
+            text-align: right;
+            font-size: 11px;
+        }
+        
+        .jeweller-logo {
+            width: 60px;
+            height: 60px;
+            float: right;
+            margin-bottom: 5px;
+        }
+        
+        .jeweller-name {
+            font-weight: bold;
+            font-size: 14px;
+            color: #8B4513;
+        }
+        
+        .jeweller-tagline {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 10px;
+        }
+        
+        .main-table th,
+        .main-table td {
+            border: 1px solid #000;
+            padding: 4px 2px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .main-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            font-size: 9px;
+        }
+        
+        .description-col {
+            text-align: left;
+            width: 150px;
+        }
+        
+        .total-row {
+            font-weight: bold;
+            background-color: #f5f5f5;
+        }
+        
+        .bottom-section {
+            display: table;
+            font-weight: normal;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .bottom-left {
+            display: table-cell;
+            width: 80%;
+           
+            vertical-align: top;
+            padding-right: 10px;
+        }
+        
+        .bottom-right {
+            display: table-cell;
+            width: 20%;
+            text-align: center;
+        }
+        
+        .jewellery-image {
+            width: 150px;
+            height: 100px;
+            border: 1px solid #ccc;
+            margin: 10px auto;
+        }
+        
+        .info-row {
+            display: flex;
+            border: 1px solid #000;
+            padding: 2px;
+            font-weight: normal;
+            font-size: 10px;
+        }
+        
+        .info-label {
+            width: 200px;
+            font-weight: bold;
+        }
+        
+        .info-value {
+            flex: 1;
+            padding-right: 3px;
+            text-align: right;
+        }
+        
+        .declaration {
+            margin: 15px 0;
+            font-size: 11px;
+            text-align: justify;
+            line-height: 1.4;
+        }
+        
+        .signature-section {
+            display: table;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .signature-cell {
+            display: table-cell;
+            width: 33.33%;
+            text-align: center;
+            vertical-align: bottom;
+            height: 80px;
+            border-bottom: 1px solid #000;
+            padding: 5px;
+        }
+        
+        .signature-title {
+            font-size: 10px;
+            margin-top: 60px;
+            font-weight: bold;
+        }
+        
+        .hindi-text {
+            font-family: 'Devanagari', Arial, sans-serif;
+        }
+        
+        .amount {
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .checkmark {
+            font-size: 16px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-container">
+        <!-- Header Section -->
+      
+        <div class="header-row" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
+    
+            <!-- Left: Bank Info with Logo -->
+            <div class="header-cell bank-section" style="flex: 1;">
+                <div style="display: flex; align-items: center;">
+                    <img src="<%= data.bankLogoUrl %>" alt="Bank Logo" style="width: 60px; height: 60px; object-fit: contain; border-radius: 10px;">
+                    <div style="padding-left: 8px;">
+                        <div class="bank-name">Union Bank Of India</div>
+                        <div class="branch-name"><%= data.branchName || '' %></div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <div class="customer-row"><strong>Mr./Mrs:-</strong> <%= data.customerDetails.customerName || '' %></div>
+                    <div class="customer-row"><strong>Address:-</strong> <%= data.customerDetails.customerAddress || '' %></div>
+                    <div class="customer-row"><strong>Mobile No:-</strong> <%= data.customerDetails.mobileNo || '' %></div>
+                    <div class="customer-row"><strong>A/c No.:-</strong> <%= data.customerDetails.accountNo || '' %></div>
+                    <div class="customer-row"><strong>Cust. ID:</strong> <%= data.customerDetails.custId || '' %></div>
+                    <div class="customer-row"><strong>Bag No. :</strong> <%= data.customerDetails.bagNo || '' %></div>
+                </div>
+            </div>
+        
+            <!-- Center: Beti Bachao Logo and Title -->
+            <div class="header-cell center-section" style="flex: 0 0 200px; text-align: center;">
+                <img src="<%= data.betiBachaoLogoUrl %>" alt="Beti Bachao Logo" style="width: 100px; height: 100px; border-radius: 50%; object-fit: contain; margin-bottom: 8px;">
+                <div class="certificate-title" style="font-weight: bold;">Certificate of Goldsmith<br>Details of Gold Ornaments / Jewellery</div>
+            </div>
+        
+            <!-- Right: Jeweller Info -->
+            <div class="header-cell jeweller-section" style="flex: 1; text-align: right;">
+               
+                <div class="jeweller-name">
+                    <img src="<%= data.jewellerLogoUrl  %>" alt="Jeweller Logo" style="width: 60px; height: 60px; border-radius: 50%; object-fit: contain; margin-bottom: 5px;">
+                    <%= data.jwellerDetails.jewellerName || '' %></div>
+                <div class="jeweller-tagline"><%= data.jwellerDetails.jewellerSubtitle || '' %></div>
+                <div><%= data.jwellerDetails.jewellerAddress || '' %></div>
+                <div>Phone <%= data.jwellerDetails.jewellerPhone || '' %> Mobile <%= data.jwellerDetails.jewellerMobile || '' %></div>
+                    <div>Email :- <%= data.jwellerDetails.jewellerEmail || '' %></div>
+                <div>UBI A/c No. :- <%= data.jwellerDetails.jewellerUbiAc || '' %></div>
+                <div>IOV membership No.: <%= data.jwellerDetails.membershipNo || '' %></div>
+            </div>
+        
+        </div>
+        
+        
+        <!-- Main Table -->
+        <table class="main-table">
+            <thead>
+                <tr>
+                    <th>Sr. No</th>
+                    <th>Description of Gold Ornaments</th>
+                    <th>No Of Units</th>
+                    <th>Gross Weight in Grams</th>
+                    <th>Net Weight (Gross less Vaux, Stones, dust etc) Grams</th>
+                    <th>Purity in Carat</th>
+                    <th>Equivalent weight of 22 carat gold contents=f/ 22 (Grams)</th>
+                    <th>Rate Per Gram(Prescri bed by Corporate Office) for 22 Carat</th>
+                    <th>Value Of the gold Ornaments = G*H</th>
+                </tr>
+                <tr style="font-size: 8px;">
+                    <th>A</th>
+                    <th>B</th>
+                    <th>C</th>
+                    <th>D</th>
+                    <th>E</th>
+                    <th>F</th>
+                    <th>G</th>
+                    <th>H</th>
+                    <th>I</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% (data.ornaments || []).forEach((item, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td class="description-col"><%= item.description %></td>
+                    <td><%= item.units %></td>
+                    <td><%= item.grossWeight %></td>
+                    <td><%= item.netWeight %></td>
+                    <td><%= item.purity %></td>
+                    <td><%= item.equivalentWeight %></td>
+                    <td><%= item.ratePerGram %></td>
+                    <td class="amount">₹ <%= item.value %></td>
+                </tr>
+                <% }) %>
+                
+               
+                <tr class="total-row">
+                    <td colspan="2"><strong>TOTAL</strong></td>
+                    <td><strong><%= data.totalUnits || 0 %></strong></td>
+                    <td><strong><%= data.totalGrossWeight ||0 %></strong></td>
+                    <td><strong><%= data.totalNetWeight || 0 %></strong></td>
+                    <td></td>
+                    <td><strong><%= data.totalEquivalentWeight || 0 %></strong></td>
+                    <td></td>
+                    <td class="amount"><strong>₹ <%= data.totalValue || 0 %></strong></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Bottom Section -->
+        <div class="bottom-section">
+            <div class="bottom-left">
+                <div class="info-row">
+                    <span class="info-label">Value of Gold as per Market Rate</span>
+                    <span class="info-value amount">₹ <%= data.marketRateValue || 0 %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label" style="width: 40%;">Value of Gold as Per Bank Card Rate(Total wt.in 22ct)</span>
+                    <span class="info-value">₹ <%= data.bankCardRateWeight || 0 %> Grams</span>
+                    <span class="info-value">₹ <%= data.bankCardRate || 0 %> card rate/gram</span>
+                    <span class="info-value amount">₹ <%= data.bankCardValue || 0%></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Minimum of Above two</span>
+                    <span class="info-value amount">₹ <%= data.minimumOfAboveTwo || 0 %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Less Margin (35%)</span>
+                    <span class="info-value amount">₹ <%= data.lessMargin || 0 %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Eligible Amount</span>
+                    <span class="info-value amount">₹ <%= data.eligibleAmount || 0 %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Loan Requested by Borrower</span>
+                    <span class="info-value amount">₹ <%= data.loanRequested || 0 %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label" style="width: 70%;">Loan to be sanctioned (minimum of eligible amount Or Loan Requirement)</span>
+                    <span class="info-value amount">₹ <%= data.loanAmount || '- ' %></span>
+                </div>
+            </div>
+            
+            <div class="bottom-right">
+                <div class="jewellery-image" style="background: #f9f9f9; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; color: #999;">
+                    <% if (data.ornamentImage) { %>
+                        <img src="<%= data.ornamentImage %>" alt="Ornament" style="max-width: 100%; max-height: 100%;">
+                    <% } else { %>
+                        Ornament Image
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Declaration -->
+        <div class="declaration">
+            I Mr. <strong><%= data.customerDetails.customerName || '' %></strong> son of Mr. <strong><%= data.customerDetails.fatherName || '' %></strong> aged about <strong><%= data.customerDetails.age || '41' %></strong> Years residing at <strong><%= data.customerDetails.address || '' %></strong> hereby certify that I have checked and weighted the above mentioned gold ornaments /coins/issued by bank/jewellery and the Net Weight of gold there in is <strong><%= data.certifiedWeight || 0 %></strong> Grams of <strong>22</strong> carat purity. I hereby certify that the Bank may safely grant a loan of <strong>₹ <%= data.certifiedLoanAmount || 0 %></strong> /- against pledge of the said gold ornaments /coins issued by bank /jewellery .<br><br>
+            I am ready to purchase these gold ornaments/coin issued by banks/jewellery at market rate at any time as and when demanded by the Bank. 
+            <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+                <strong>Tests Done:</strong>
+                <% (data.selectedTests || []).forEach(test => { %>
+                    <div style=" padding: 2px 6px;font-size: 10px;">
+                        <span class="checkmark">✓</span> <%= test.charAt(0).toUpperCase() + test.slice(1) %>
+                    </div>
+                <% }) %>
+                <span style="margin-left: auto;"><%= data.testDate || '' %> </span>
+            </div>
+        </div>
+        
+        <!-- Signature Section -->
+        <div class="signature-section">
+            <div class="signature-cell">
+                <div class="signature-title">Signature of Borrower</div>
+            </div>
+            <div class="signature-cell">
+                <div class="signature-title">Signature of Goldsmith</div>
+            </div>
+            <div class="signature-cell">
+                <div class="signature-title">Signature of Bank Official</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

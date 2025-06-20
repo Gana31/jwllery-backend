@@ -1,0 +1,27 @@
+{
+  "name": "jwllerybackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.2",
+    "multer": "^2.0.1",
+    "nodemon": "^3.1.10",
+    "puppeteer": "^24.10.2",
+    "uuid": "^11.1.0"
+  }
+}
