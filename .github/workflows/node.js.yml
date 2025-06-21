@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  # means this runs on your EC2 where runner is installed
+    runs-on: self-hosted  # runs on your EC2
 
     steps:
       - name: Checkout code
@@ -27,6 +27,13 @@ jobs:
       - name: Run tests (if applicable)
         run: npm test || echo "No tests to run"
 
+      - name: Copy code to ~/jewellery-api
+        run: |
+          rm -rf /home/ubuntu/jewellery-api/*
+          cp -r $GITHUB_WORKSPACE/* /home/ubuntu/jewellery-api/
+          cp -r $GITHUB_WORKSPACE/.* /home/ubuntu/jewellery-api/ || true
+
       - name: PM2 Restart
         run: |
+          cd /home/ubuntu/jewellery-api
           pm2 reload jewellery-api || pm2 start index.js --name jewellery-api
