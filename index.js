@@ -9,7 +9,7 @@ const startServer = async () => {
     await connectToDatabase();
     
     const port = process.env.PORT || 7000;
-    const server = app.listen(port, () => {
+    const server = app.listen(port, '0.0.0.0',() => {
       console.log(`App is listening on port ${port}`);
     });
     await AppConfigModel.ensureDefault();

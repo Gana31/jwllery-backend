@@ -9,6 +9,18 @@ import ejs from "ejs";
 import AppraisalModel from "../models/AppraisalModel.js";
 import { uploadImageToS3, uploadPdfToS3 } from "../utils/s3.js";
 
+// Utility function to format numbers with 2 decimal places
+function formatToTwoDecimals(value) {
+  const num = parseFloat(value) || 0;
+  return num.toFixed(2);
+}
+
+// Utility function to format weight values with 3 decimal places
+function formatToThreeDecimals(value) {
+  const num = parseFloat(value) || 0;
+  return num.toFixed(3);
+}
+
 function parseIfJsonString(val) {
   if (typeof val === 'string') {
     try {
@@ -155,6 +167,7 @@ export const generateSbiPdf = async (req, res) => {
   try {
     const data = req.body;
     const appConfig = await getAppConfig();
+    const bankDetails = await BankModel.findOne({ bankName: data.selectedBank });
     // console.log(data);
 
     // Parse fields that may be sent as JSON strings
@@ -182,7 +195,7 @@ export const generateSbiPdf = async (req, res) => {
       // Use your backend logic to find the correct fields
       const netWeight = parseFloat(item['Net Weight (Gross Weight less Vaux, Stones, dust etc) Grams'] || item['netWeight'] || '0') || 0;
       const goldRate = parseFloat(item['Gold Rate Per Carat 22/20/18'] || item['goldRate'] || '0') || 0;
-      const backendApprox = parseFloat((netWeight * goldRate).toFixed(3));
+      const backendApprox = parseFloat((netWeight * goldRate).toFixed(2));
 
       // Try to get the frontend value (from the correct field)
       const frontendApprox = parseFloat(item['Approx Value In Rupees'] || item['approxValue'] || '0');
@@ -192,12 +205,12 @@ export const generateSbiPdf = async (req, res) => {
    
       return {
         description: item['Description of Gold Ornaments'] || item['description'],
-        units: parseFloat(item['No Of Units'] || item['units'] || '0'),
-        purity: parseFloat(item['Purity in Carat'] || item['purity'] || '0'),
-        grossWeight: parseFloat(item['Gross Weight in Grams'] || item['grossWeight'] || '0'),
-        netWeight,
-        goldRate,
-        approxValue: isClose ? frontendApprox : backendApprox,
+        units: formatToTwoDecimals(item['No Of Units'] || item['units'] || '0'),
+        purity: formatToTwoDecimals(item['Purity in Carat'] || item['purity'] || '0'),
+        grossWeight: formatToThreeDecimals(item['Gross Weight in Grams'] || item['grossWeight'] || '0'),
+        netWeight: formatToThreeDecimals(netWeight),
+        goldRate: formatToTwoDecimals(goldRate),
+        approxValue: formatToTwoDecimals(isClose ? frontendApprox : backendApprox),
         approxValueSource: isClose ? 'frontend' : 'backend', // (optional, for debugging)
       };
     });
@@ -215,8 +228,8 @@ export const generateSbiPdf = async (req, res) => {
     });
 
     const valuations = selectedValuation.map(percentage => ({
-      percentage,
-      amount: ((totalApproxValue * (percentage / 100)).toFixed(4))
+      percentage: formatToTwoDecimals(percentage),
+      amount: formatToTwoDecimals((totalApproxValue * (percentage / 100)))
     }));
 
     const renderData = {
@@ -239,14 +252,14 @@ export const generateSbiPdf = async (req, res) => {
       jewellerAddress: appConfig?.companyAddress || '',
       jewellerPhone: `Phone: ${appConfig?.companyPhone || ''}`,
       jewellerEmail: `Email: ${appConfig?.companyEmail || ''}`,
-      jewellerAccount: `A/c no: ${appConfig?.companyAccount || ''}`,
-      jewellerMembership: 'IOV membership No. :V123-42-31308',
+      jewellerAccount: `A/c no: ${bankDetails?.accountNo || '123123123'}`,
+      jewellerMembership: `IOV membership No. : ${bankDetails?.membershipNo || "V123-42-313000"}`,
       goldRateDate: '22/20/18',
       goldItems,
-      totalUnits: totalUnits.toString(),
-      totalGrossWeight: totalGrossWeight.toFixed(3),
-      totalNetWeight: totalNetWeight.toFixed(3),
-      totalValue: totalApproxValue.toFixed(2),
+      totalUnits: formatToTwoDecimals(totalUnits),
+      totalGrossWeight: formatToThreeDecimals(totalGrossWeight),
+      totalNetWeight: formatToThreeDecimals(totalNetWeight),
+      totalValue: formatToTwoDecimals(totalApproxValue),
       valuations
     };
 
@@ -319,24 +332,24 @@ export const generateUnionPdf = async (req, res) => {
     // Gold items mapping and totals
     const goldItems = ornaments.map(item => ({
       description: item.description,
-      units: parseFloat(item.units || 0),
-      grossWeight: parseFloat(item.grossWeight || 0),
-      netWeight: parseFloat(item.netWeight || 0),
-      netWeightGrams: item.purity,
-      purity: parseFloat(item.purity || 0),
-      equivalentWeight: parseFloat(item.equivalentWeight || 0),
-      ratePerGram: item.ratePerGram,
-      value: parseFloat(item.value?.replace(/,/g, '') || 0)
+      units: formatToTwoDecimals(item.units || 0),
+      grossWeight: formatToThreeDecimals(item.grossWeight || 0),
+      netWeight: formatToThreeDecimals(item.netWeight || 0),
+      netWeightGrams: formatToTwoDecimals(item.purity || 0),
+      purity: formatToTwoDecimals(item.purity || 0),
+      equivalentWeight: formatToThreeDecimals(item.equivalentWeight || 0),
+      ratePerGram: formatToTwoDecimals(item.ratePerGram || 0),
+      value: formatToTwoDecimals(parseFloat(item.value?.replace(/,/g, '') || 0))
     }));
 
     // Totals
     let totalUnits = 0, totalGrossWeight = 0, totalNetWeight = 0, totalEquivalentWeight = 0, totalValue = 0;
     for (const item of goldItems) {
-      totalUnits += item.units;
-      totalGrossWeight += item.grossWeight;
-      totalNetWeight += item.netWeight;
-      totalEquivalentWeight += item.equivalentWeight;
-      totalValue += item.value;
+      totalUnits += parseFloat(item.units || 0);
+      totalGrossWeight += parseFloat(item.grossWeight || 0);
+      totalNetWeight += parseFloat(item.netWeight || 0);
+      totalEquivalentWeight += parseFloat(item.equivalentWeight || 0);
+      totalValue += parseFloat(item.value || 0);
     }
 
     // Final renderData
@@ -356,7 +369,7 @@ export const generateUnionPdf = async (req, res) => {
         jewellerPhone: appConfig?.companyPhone || '',
         jewellerMobile: appConfig?.companyMobile || '',
         jewellerEmail: appConfig?.companyEmail || '',
-        jewellerUbiAc: appConfig?.companyAccount || '',
+        jewellerUbiAc: bankDetails?.accountNo || '000000000',
         membershipNo: bankDetails?.membershipNo || '',
       },
 
@@ -376,32 +389,32 @@ export const generateUnionPdf = async (req, res) => {
       // Gold items and totals
       ornaments: goldItems,
       ornamentImage:  `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${jewelleryImagePath?.replace(/^\//, '')}`,
-      totalUnits: totalUnits.toString(),
-      totalGrossWeight: totalGrossWeight.toFixed(3),
-      totalNetWeight: totalNetWeight.toFixed(3),
-      totalEquivalentWeight: totalEquivalentWeight.toFixed(3),
-      totalValue: totalValue.toFixed(2),
+      totalUnits: formatToTwoDecimals(totalUnits),
+      totalGrossWeight: formatToThreeDecimals(totalGrossWeight),
+      totalNetWeight: formatToThreeDecimals(totalNetWeight),
+      totalEquivalentWeight: formatToThreeDecimals(totalEquivalentWeight),
+      totalValue: formatToTwoDecimals(totalValue),
 
       // Valuation details
-      bankCardRateWeight: totalEquivalentWeight.toFixed(3),
-      bankCardRate: customerDetails.goldAsPerMarketRate || '',
-      bankCardValue: totalValue.toFixed(2),
-      eligibleAmount: totalValue.toFixed(2),
-      loanRequested: customerDetails.loanRequestedByBorrower || '',
-      lessMargin: customerDetails.lessMargin35 || '',
-      minimumOfAboveTwo: customerDetails.minimumOfAboveTwo || '',
-      loanAmount: customerDetails.loanToBeSanctioned || '',
+      bankCardRateWeight: formatToThreeDecimals(totalEquivalentWeight),
+      bankCardRate: formatToTwoDecimals(customerDetails.goldAsPerMarketRate || 0),
+      bankCardValue: formatToTwoDecimals(totalValue),
+      eligibleAmount: formatToTwoDecimals(totalValue),
+      loanRequested: formatToTwoDecimals(customerDetails.loanRequestedByBorrower || 0),
+      lessMargin: formatToTwoDecimals(customerDetails.lessMargin35 || 0),
+      minimumOfAboveTwo: formatToTwoDecimals(customerDetails.minimumOfAboveTwo || 0),
+      loanAmount: formatToTwoDecimals(customerDetails.loanToBeSanctioned || 0),
 
       // Verifier
-      marketRateValue: customerDetails.goldAsPerMarketRate || '',
+      marketRateValue: formatToTwoDecimals(customerDetails.goldAsPerMarketRate || 0),
       verifierName: req.user?.username || '',
       verifierFatherName: customerDetails.fatherName || '',
       verifierAge: customerDetails.age || '',
       verifierAddress: customerDetails.address || '',
 
-      certifiedWeight: totalEquivalentWeight.toFixed(3),
-      certifiedPurity: '22',
-      certifiedLoanAmount: customerDetails.loanToBeSanctioned || '',
+      certifiedWeight: formatToThreeDecimals(totalEquivalentWeight),
+      certifiedPurity: '22.00',
+      certifiedLoanAmount: formatToTwoDecimals(customerDetails.loanToBeSanctioned || 0),
 
       // Testing
       selectedTests: selectedTests,

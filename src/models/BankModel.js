@@ -26,6 +26,7 @@ const BankSchema = new mongoose.Schema({
   ],
   valuation: [{ type: Number }],
   membershipNo: { type: String, required: false },
+  accountNo: { type: String, required: false },
 });
 
 // List all image/pdf fields for S3 URL generation
