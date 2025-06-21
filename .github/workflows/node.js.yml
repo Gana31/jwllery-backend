@@ -30,10 +30,10 @@ jobs:
       - name: Copy code to ~/jewellery-api
         run: |
           rm -rf /home/ubuntu/jewellery-api/*
-          cp -r $GITHUB_WORKSPACE/* /home/ubuntu/jewellery-api/
-          cp -r $GITHUB_WORKSPACE/.* /home/ubuntu/jewellery-api/ || true
+          cp -r $GITHUB_WORKSPACE/* /home/ubuntu/jwllery-backend/
+          cp -r $GITHUB_WORKSPACE/.* /home/ubuntu/jwllery-backend/ || true
 
       - name: PM2 Restart
         run: |
-          cd /home/ubuntu/jewellery-api
+          cd /home/ubuntu/jwllery-backend
           pm2 reload jewellery-api || pm2 start index.js --name jewellery-api
