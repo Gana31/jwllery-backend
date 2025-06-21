@@ -27,9 +27,9 @@ jobs:
       - name: Run tests (if applicable)
         run: npm test || echo "No tests to run"
 
-      - name: Copy code to ~/jewellery-api
+      - name: Copy code to ~/jwllery-backend
         run: |
-          rm -rf /home/ubuntu/jewellery-api/*
+          rm -rf /home/ubuntu/jwllery-backend/*
           cp -r $GITHUB_WORKSPACE/* /home/ubuntu/jwllery-backend/
           cp -r $GITHUB_WORKSPACE/.* /home/ubuntu/jwllery-backend/ || true
 
