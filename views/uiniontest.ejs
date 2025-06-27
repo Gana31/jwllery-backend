@@ -26,6 +26,12 @@
             padding: 10px;
             box-sizing: border-box;
         }
+        .shree{
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
         
         .header-row {
             display: table;
@@ -184,7 +190,7 @@
         .jewellery-image {
             width: 150px;
             height: 100px;
-            border: 1px solid #ccc;
+         
             margin: 10px auto;
         }
         
@@ -255,7 +261,7 @@
 <body>
     <div class="certificate-container">
         <!-- Header Section -->
-      
+      <div class="shree"> // श्री //</div>
         <div class="header-row" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;">
     
             <!-- Left: Bank Info with Logo -->
@@ -291,8 +297,14 @@
                     <%= data.jwellerDetails.jewellerName || '' %></div>
                 <div class="jeweller-tagline"><%= data.jwellerDetails.jewellerSubtitle || '' %></div>
                 <div><%= data.jwellerDetails.jewellerAddress || '' %></div>
-                <div>Phone <%= data.jwellerDetails.jewellerPhone || '' %> Mobile <%= data.jwellerDetails.jewellerMobile || '' %></div>
-                    <div>Email :- <%= data.jwellerDetails.jewellerEmail || '' %></div>
+                <% if (data.jwellerDetails.jewellerPhone && data.jwellerDetails.jewellerMobile) { %>
+                  <div><%= data.jwellerDetails.jewellerPhone %> Mobile <%= data.jwellerDetails.jewellerMobile %></div>
+                <% } else if (data.jwellerDetails.jewellerPhone) { %>
+                  <div><%= data.jwellerDetails.jewellerPhone %></div>
+                <% } else if (data.jwellerDetails.jewellerMobile) { %>
+                  <div><%= data.jwellerDetails.jewellerMobile %></div>
+                <% } %>
+                <div>Email :- <%= data.jwellerDetails.jewellerEmail || '' %></div>
                 <div>UBI A/c No. :- <%= data.jwellerDetails.jewellerUbiAc || '' %></div>
                 <div>IOV membership No.: <%= data.jwellerDetails.membershipNo || '' %></div>
             </div>
@@ -349,7 +361,7 @@
                     <td><strong><%= data.totalNetWeight || 0 %></strong></td>
                     <td></td>
                     <td><strong><%= data.totalEquivalentWeight || 0 %></strong></td>
-                    <td></td>
+                    <td><strong><%= data.totalGoldPerGram || 0 %></strong></td>
                     <td class="amount"><strong>₹ <%= data.totalValue || 0 %></strong></td>
                 </tr>
             </tbody>
@@ -391,11 +403,9 @@
             </div>
             
             <div class="bottom-right">
-                <div class="jewellery-image" style="background: #f9f9f9; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; color: #999;">
-                    <% if (data.ornamentImage) { %>
-                        <img src="<%= data.ornamentImage %>" alt="Ornament" style="max-width: 100%; max-height: 100%;">
-                    <% } else { %>
-                        Ornament Image
+                <div class="jewellery-image" style="display: flex; align-items: center; justify-content: center;">
+                    <% if (data.ornamentImage && data.ornamentImage.trim() && data.ornamentImage !== 'null' && data.ornamentImage !== 'undefined' && data.ornamentImage !== '' && !data.ornamentImage.includes('placeholder') && !data.ornamentImage.includes('default')) { %>
+                        <img src="<%= data.ornamentImage %>" style="max-width: 100%; max-height: 100%;">
                     <% } %>
                 </div>
             </div>

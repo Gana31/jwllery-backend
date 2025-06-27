@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Ornament Certificate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            padding: 10px;
+            font-size: 12px;
+        }
+
+        .certificate {
+            width: 210mm;
+            min-height: auto;
+            margin: 0 auto;
+            border: 2px solid black;
+            padding: 15px;
+            background: white;
+            position: relative;
+        }
+
+        /* Row 1 - Shree */
+        .header-shree {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Row 2 - Two columns with logos and company info */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+        }
+
+        .left-header {
+            display: flex;
+            width: 50%;
+        }
+
+        .pnb-section {
+            width: 50%;
+            margin-right: 20px;
+        }
+
+        .pnb-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .pnb-text {
+            font-size: 12px;
+            text-align: starat;
+            margin-bottom: 5px;
+        }
+
+        .branch-label {
+            font-size: 12px;
+            text-align: start;
+            font-weight: bold;
+        }
+
+        .branch-info {
+            font-size: 12px;
+            text-align: start;
+        }
+
+        .company-logo-section {
+            width: 60%;
+        }
+
+        .company-logo {
+            width: 100px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .right-header {
+            width: 50%;
+            text-align: right;
+        }
+
+        .jewellery-info {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .jewellery-info h3 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        /* Row 4 - Customer details and rate */
+        .customer-rate-section {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+            border: 1px solid #000;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .customer-details {
+            width: 50%;
+            border-right: 1px solid #000;
+            padding: 8px 8px 8px 8px;
+        }
+
+        .customer-details table {
+            width: 100%;
+            font-size: 12px;
+        }
+
+        .customer-details td {
+            padding: 2px 2px;
+            vertical-align: top;
+        }
+
+        .customer-details td:first-child {
+            width: 90px;
+            white-space: nowrap;
+        }
+
+        .rate-section {
+            width: 50%;
+            text-align: center;
+            padding: 8px 8px 8px 8px;
+        }
+
+        .rate-logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .rate-info {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Row 5 - Description paragraph */
+        .description {
+            font-size: 11px;
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.3;
+        }
+
+        /* Row 6 - Main table */
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 11px;
+        }
+
+        .main-table th,
+        .main-table td {
+            border: 1px solid black;
+            padding: 4px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .main-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .main-table .description-col {
+            text-align: left;
+        }
+
+        /* Row 7 - Second description */
+        .second-description {
+            font-size: 11px;
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.3;
+        }
+
+        /* Row 8 - Summary table and image */
+        .summary-image-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .summary-table-section {
+            width: 60%;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            border: 1px solid black;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .summary-table th {
+            background-color: #f0f0f0;
+        }
+
+        .jewellery-image-section {
+            width: 35%;
+            text-align: center;
+        }
+
+        .jewellery-image {
+            width: 150px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin: 0 auto;
+            background: #fff;
+        }
+
+        /* Row 9 - Signatures */
+        .signatures-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            margin-bottom: 0%;
+        }
+
+        .signature-column {
+            width: 30%;
+            text-align: center;
+        }
+
+        .signature-space {
+            height: 60px;
+            border-bottom: 1px solid black;
+            margin-bottom: 10px;
+        }
+
+        .signature-text {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                padding: 10px;
+            }
+            
+            .certificate {
+                width: 100%;
+                min-height: auto;
+                border: 2px solid black;
+                margin: 0;
+            }
+        }
+
+        .table-header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .approx-value-header, .approx-value-col {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <!-- Row 1: Shree Header -->
+        <div class="header-shree">
+            // श्री //
+        </div>
+
+        <!-- Row 2: Header with logos and company info -->
+        <div class="header-section">
+            <div class="left-header">
+                <div class="pnb-section">
+                    <div class="pnb-logo">
+                        <% if (data.pnbLogo) { %>
+                            <img src="<%= data.pnbLogo %>" alt="<%= data.pnbLogoAlt %>" style="width: 100%; height: 100%; object-fit: contain;">
+                        <% } else { %>
+                            <%= data.pnbLogoText %>
+                        <% } %>
+                    </div>
+                    <div class="pnb-text">
+                        Together for the better
+                    </div>
+                    <div class="branch-label">branch :  <%= data.branchName %></div>
+                  
+                </div>
+                <div class="company-logo-section">
+                    <div class="company-logo">
+                        <% if (data.companyLogo) { %>
+                            <img src="<%= data.companyLogo %>" alt="<%= data.companyLogoAlt %>" style="width: 100%; height: 100%; object-fit: contain;">
+                        <% } else { %>
+                            <%= data.companyLogoText %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <div class="right-header">
+                <div class="jewellery-info">
+                    <h3><%= data.companyName %></h3>
+                    <div><%= data.companyTagline %></div>
+                 
+                    <div><%= data.shopAddress %></div>
+                    <div><strong>Phone </strong>:  <% if (data.phoneNumbers && data.mobileNumbers) { %>
+                        <%= data.phoneNumbers %> Mobile <%= data.mobileNumbers %><br>
+                      <% } else if (data.phoneNumbers) { %>
+                        <%= data.phoneNumbers %><br>
+                      <% } else if (data.mobileNumbers) { %>
+                        <%= data.mobileNumbers %><br>
+                      <% } %></div>
+                    <div><strong>Email </strong>: <%= data.emailAddress %></div>
+                    <div><strong>IOV membership No. </strong>: <%= data.membershipNo %></div>
+                    <div><strong>PNB a/c No. </strong>: <%= data.accountNo %></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 4: Customer Details and Today's Rate -->
+        <div class="customer-rate-section">
+            <div class="customer-details">
+                <table>
+                    <tr>
+                        <td><strong>Name:</strong></td>
+                        <td><%= data.customerName %></td>
+                        
+                    </tr>
+                    <tr>
+                        <td><strong>Address :</strong></td>
+                        <td><%= data.customerAddress %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile:</strong></td>
+                        <td><%= data.customerMobile %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Account No:</strong></td>
+                        <td><%= data.accountNoCustomer %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pouch No:</strong></td>
+                        <td><%= data.punchNo %></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="rate-section">
+                <div class="rate-logo">
+                    <% if (data.rateLogo) { %>
+                        <img src="<%= data.rateLogo %>" alt="<%= data.rateLogoAlt %>" style="width: 100%; height: 100%; object-fit: contain;">
+                    <% } else { %>
+                        <%= data.rateLogoText %>
+                    <% } %>
+                </div>
+                <div class="rate-info">
+                    Today's rate of 22 Karat Gold : ₹<%= data.goldRate %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 5: Description -->
+        <div class="description">
+            This is to certify that I have verified the Gold Ornaments which are given to me by <strong> Mr./Mrs. <%= data.customerName %> Mobile No. <%= data.customerMobile %> </strong> for taking of Gold Loan from <strong>Punjab National Bank <%= data.branchName %></strong> from weight and value of these ornaments and I take the full responsibility of the same.
+            <br><br>
+        </div>
+        <div class="table-header">
+            Details of Gold Ornaments given are to me in as under:
+        </div>
+        <!-- Row 6: Main Ornaments Table -->
+        <table class="main-table">
+            <thead>
+                <tr>
+                    <th><%= data.tableHeaders.srNo %></th>
+                    <th><%= data.tableHeaders.description %></th>
+                    <th><%= data.tableHeaders.hallmark %></th>
+                    <th><%= data.tableHeaders.units %></th>
+                    <th><%= data.tableHeaders.purity %></th>
+                    <th><%= data.tableHeaders.grossWeight %></th>
+                    <th><%= data.tableHeaders.netWeight %></th>
+                    <th><%= data.tableHeaders.goldperGram %></th>
+                    <th class="approx-value-header"><%= data.tableHeaders.ApproxValue %></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (data.ornaments && data.ornaments.length > 0) { %>
+                    <% data.ornaments.forEach((item, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td class="description-col"><%= item.description %></td>
+                            <td><%= item.hallmark %></td>
+                            <td><%= item.units %></td>
+                            <td><%= item.purity %></td>
+                            <td><%= item.grossWeight %></td>
+                            <td><%= item.netWeight %></td>
+                            <td><%= item.goldperGram %></td>
+                            <td class="approx-value-col"><%= item.value %></td>
+                        </tr>
+                    <% }) %>
+                <% } %>
+                
+              
+                
+                <tr style="font-weight: bold;">
+                    <td></td>
+                    <td>TOTAL</td>
+                    <td></td>
+                    <td><%= data.ornaments && data.ornaments.reduce((sum, o) => sum + Number(o.units || 0), 0) %></td>
+                    <td></td>
+                    <td><%= data.totalWeight %></td>
+                    <td><%= data.totalNetWeight %></td>
+                    <td><%= data.totalGoldPerGram %></td>
+                    <td class="approx-value-col"><%= data.totalValue %></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Row 7: Second Description -->
+        <div class="second-description">
+            <strong>Declaration of the Borrower:</strong><br>
+            I have not been handed over the above ornaments to the bank without any pressure and in good state of mind for the purpose of obtaining loan from <strong>Punjab National Bank. <%= data.branchName %></strong> These ornaments are my own and I take full responsibility for it.
+            <br>
+            If the above ornaments i also fully agree the above certificate given by <strong><%= data.companyName %></strong>.
+        </div>
+
+        <!-- Row 8: Summary Table and Jewellery Image -->
+        <div class="summary-image-section">
+            <div class="summary-table-section">
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th><%= data.summaryHeaders.srNo %></th>
+                            <th><%= data.summaryHeaders.goldType %></th>
+                            <th><%= data.summaryHeaders.rate %></th>
+                            <th><%= data.summaryHeaders.valuation %></th>
+                            <th><%= data.summaryHeaders.eligibility %></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (data.summaryData && data.summaryData.length > 0) { %>
+                            <% data.summaryData.forEach((item, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= item.goldType %></td>
+                                    <td><%= item.rate %></td>
+                                    <td><%= item.valuation %></td>
+                                    <td><%= item.eligibility %></td>
+                                </tr>
+                            <% }) %>
+                        <% } %>
+                       
+                    </tbody>
+                </table>
+                <div style="text-align: start; margin-top: 8px; font-size: 12px;"><strong>Place:</strong> <%= data.placeName %></div>
+                <div style="text-align: start; margin-top: 8px; font-size: 12px;"><strong>Date:</strong> <%= data.certificateDate %></div>
+            </div>
+            <div class="jewellery-image-section">
+                <div class="jewellery-image">
+                    <% if (
+                        data.jewelleryImage &&
+                        typeof data.jewelleryImage === 'string' &&
+                        data.jewelleryImage.trim() !== '' &&
+                        data.jewelleryImage !== 'null' &&
+                        data.jewelleryImage !== 'undefined' &&
+                        !data.jewelleryImage.includes('placeholder') &&
+                        !data.jewelleryImage.includes('default')
+                    ) { %>
+                        <img src="<%= data.jewelleryImage %>" alt="<%= data.jewelleryImageAlt %>" style="width: 100%; height: 100%; object-fit: contain;">
+                    <% } else { %>
+                        <!-- Show blank if no valid image -->
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 9: Signatures -->
+        <div class="signatures-section">
+            <div class="signature-column">
+                <div class="signature-space"></div>
+                <div class="signature-text">
+                    Name and Signature of the Borrower
+                </div>
+            </div>
+            <div class="signature-column">
+                <div class="signature-space"></div>
+                <div class="signature-text">
+                    Authorised Signatory Anand Jewellers
+                </div>
+            </div>
+            <div class="signature-column">
+                <div class="signature-space"></div>
+                <div class="signature-text">
+                    Branch Manager PNB
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -12,6 +12,16 @@ const s3 = new S3({
   region: process.env.AWS_BUCKET_REGION,
 });
 
+// Sanitize filename for file system compatibility
+const sanitizeFileName = (name) => {
+  if (!name) return 'customer';
+  return name
+    .replace(/[<>:"/\\|?*]/g, '_') // Replace invalid characters with underscore
+    .replace(/\s+/g, '_') // Replace spaces with underscore
+    .replace(/_{2,}/g, '_') // Replace multiple underscores with single
+    .trim();
+};
+
 // Helper to generate folder
 const getTodayDateFolder = () => {
   const now = new Date();
@@ -35,7 +45,8 @@ export const deleteFileFromS3 = async (key) => {
 export const uploadImageToS3 = async (customerName, file) => {
   const config = await getAppConfig();
   const ext = path.extname(file.originalname);
-  const key = `images/${getTodayDateFolder()}/${customerName}-${uuidv4()}${ext}`;
+  const sanitizedCustomerName = sanitizeFileName(customerName);
+  const key = `images/${getTodayDateFolder()}/${sanitizedCustomerName}-${uuidv4()}${ext}`;
 
   const uploadParams = {
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -54,7 +65,8 @@ export const uploadImageToS3 = async (customerName, file) => {
 // Upload PDF
 export const uploadPdfToS3 = async (customerName, file) => {
   const config = await getAppConfig();
-  const key = `pdf/${getTodayDateFolder()}/${customerName}-${uuidv4()}.pdf`;
+  const sanitizedCustomerName = sanitizeFileName(customerName);
+  const key = `pdf/${getTodayDateFolder()}/${sanitizedCustomerName}-${uuidv4()}.pdf`;
 
   const uploadParams = {
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -94,7 +106,8 @@ export const uploadAppImageToS3 = async (file) => {
 export const uploadBankLogoToS3 = async (bankName, file) => {
   const config = await getAppConfig();
   const ext = path.extname(file.originalname);
-  const key = `banklogos/${bankName}/${uuidv4()}${ext}`;
+  const sanitizedBankName = sanitizeFileName(bankName);
+  const key = `banklogos/${sanitizedBankName}/${uuidv4()}${ext}`;
 
   const uploadParams = {
     Bucket: process.env.AWS_BUCKET_NAME,

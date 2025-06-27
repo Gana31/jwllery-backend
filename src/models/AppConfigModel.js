@@ -51,6 +51,11 @@ const AppConfigSchema = new mongoose.Schema(
       type: String,
       default: "Goldsmith and Valuer",
     },
+    membershipNo: {
+      type: String,
+      required: false,
+      default: "",
+    },
   },
   {
     timestamps: true,
@@ -83,6 +88,14 @@ function docTransform(doc, ret) {
 
 AppConfigSchema.set('toJSON', { virtuals: true, transform: docTransform });
 AppConfigSchema.set('toObject', { virtuals: true, transform: docTransform });
+
+// Pre-save hook to ensure createdAt/updatedAt are in IST
+AppConfigSchema.pre('save', function(next) {
+  const nowIST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  if (!this.createdAt) this.createdAt = nowIST;
+  this.updatedAt = nowIST;
+  next();
+});
 
 const AppConfigModel = mongoose.model("AppConfig", AppConfigSchema);
 export default AppConfigModel;

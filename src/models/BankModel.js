@@ -24,9 +24,22 @@ const BankSchema = new mongoose.Schema({
       required: { type: Boolean, default: false },
     }
   ],
+  bankFields: {
+    type: [
+      {
+        name: { type: String, required: true },
+        label: { type: String, required: true },
+        type: { type: String, required: true },
+        role: { type: String, required: false ,  enum: ["netWeight", "goldRate", "approxValue"], },
+        required: { type: Boolean, default: false },
+      }
+    ],
+    default: []
+  },
   valuation: [{ type: Number }],
-  membershipNo: { type: String, required: false },
   accountNo: { type: String, required: false },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 // List all image/pdf fields for S3 URL generation
@@ -46,5 +59,13 @@ function docTransform(doc, ret) {
 
 BankSchema.set('toJSON', { virtuals: true, transform: docTransform });
 BankSchema.set('toObject', { virtuals: true, transform: docTransform });
+
+// Pre-save hook to ensure createdAt/updatedAt are in IST
+BankSchema.pre('save', function(next) {
+  const nowIST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  if (!this.createdAt) this.createdAt = nowIST;
+  this.updatedAt = nowIST;
+  next();
+});
 
 export default mongoose.model('Bank', BankSchema); 

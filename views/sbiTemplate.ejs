@@ -58,7 +58,7 @@
             align-items: flex-end;
             justify-content: flex-end;
             overflow: hidden;
-            /* ensures image doesn’t spill */
+            /* ensures image doesn't spill */
             background-color: transparent;
             margin-right: 10px;
         }
@@ -324,13 +324,18 @@
                 print-color-adjust: exact;
             }
         }
-        
+        .shree{
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
 <body>
     <div class="receipt-container">
-
+        <div class="shree"> // श्री //</div>
         <!-- ROW 1: Bank Logo | Customer Details | Shop Details -->
         <div class="row-1">
             <!-- Left Column: Bank Section -->
@@ -343,7 +348,7 @@
                     <div>The Branch Manager</div>
                     <div>State Bank Of India</div>
                     <div>
-                        <%= branchCode %>
+                        <%= branchCode || '123456' %>
                     </div>
                 </div>
             </div>
@@ -379,14 +384,20 @@
                 </div>
                 <div class="shop-details">
                     <%= jewellerAddress %><br>
-                        <%= jewellerPhone %><br>
-                            <%= jewellerEmail %><br>
-                                <strong>
-                                    <%= jewellerAccount %>
-                                </strong><br>
-                                <strong>
-                                    <%= jewellerMembership %>
-                                </strong>
+                    <% if (jewellerPhone && jewellerMobile) { %>
+                       <%= jewellerPhone %> Mobile <%= jewellerMobile %><br>
+                    <% } else if (jewellerPhone) { %>
+                       <%= jewellerPhone %><br>
+                    <% } else if (jewellerMobile) { %>
+                       <%= jewellerMobile %><br>
+                    <% } %>
+                    <%= jewellerEmail %><br>
+                        <strong>
+                            <%= jewellerAccount %>
+                        </strong><br>
+                        <strong>
+                            <%= jewellerMembership %>
+                        </strong>
                 </div>
             </div>
         </div>
@@ -411,15 +422,13 @@
                       <% } %> by me on
                     <strong>
                         <%= appraisalDate %>
-                    </strong> in the presence of <strong>Shri/Smt</strong><br>
+                    </strong> in the presence of <strong>Shri/Smt : <%= bankManagerName %> (Cash in Charge)</strong><br>
                     and the exact weight, Purity of the metal and market value of each item as on date are indicate
                     below:
                 </div>
 
                 <!-- Right Column: Labels -->
-                <div class="label-section">
-                    <div class="label-line"><strong>(Cash in Charge)</strong></div>
-                </div>
+             
             </div>
         </div>
 
@@ -541,11 +550,9 @@
             <!-- Right Section: Image -->
             <div class="right-section">
                 <div class="jewellery-image">
-                    <% if (jewelryImage) { %>
+                    <% if (jewelryImage && jewelryImage.trim() && jewelryImage !== 'null' && jewelryImage !== 'undefined' && jewelryImage !== '' && !jewelryImage.includes('placeholder') && !jewelryImage.includes('default')) { %>
                         <img src="<%= jewelryImage %>" alt="Gold Jewelry">
-                        <% } else { %>
-                            [Jewelry Image]
-                            <% } %>
+                    <% } %>
                 </div>
             </div>
         </div>

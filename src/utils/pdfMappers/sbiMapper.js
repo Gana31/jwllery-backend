@@ -1,0 +1,79 @@
+export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments ,bankFields}) {
+  const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
+  const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
+  const goldItems = ornaments.map(item => {
+    const netWeight = parseFloat(item['Net Weight (Gross Weight less Vaux, Stones, dust etc) Grams'] || item['netWeight'] || '0') || 0;
+    const goldRate = parseFloat(item['Gold Rate Per Carat 22/20/18'] || item['goldRate'] || '0') || 0;
+    const frontendApprox = parseFloat(item['Approx Value In Rupees'] || item['approxValue'] || '0');
+    return {
+      description: item['Description of Gold Ornaments'] || item['description'],
+      units: formatToTwoDecimals(item['No Of Units'] || item['units'] || '0'),
+      purity: formatToTwoDecimals(item['Purity in Carat'] || item['purity'] || '0'),
+      grossWeight: formatToThreeDecimals(item['Gross Weight in Grams'] || item['grossWeight'] || '0'),
+      netWeight: formatToThreeDecimals(netWeight),
+      goldRate: formatToTwoDecimals(goldRate),
+      approxValue: formatToTwoDecimals(frontendApprox),
+    };
+  });
+  let totalUnits = 0, totalGrossWeight = 0, totalNetWeight = 0, totalApproxValue = 0;
+  goldItems.forEach(item => {
+    totalUnits += parseFloat(item.units || '0') || 0;
+    totalGrossWeight += parseFloat(item.grossWeight || '0') || 0;
+    totalNetWeight += parseFloat(item.netWeight || '0') || 0;
+    totalApproxValue += parseFloat(item.approxValue || '0') || 0;
+  });
+  const valuations = (selectedValuation || []).map(percentage => ({
+    percentage: formatToTwoDecimals(percentage),
+    amount: formatToTwoDecimals((totalApproxValue * (percentage / 100)))
+  }));
+  const now = new Date();
+  let jewelryImage = '';
+  if (
+    jewelleryImagePath &&
+    typeof jewelleryImagePath === 'string' &&
+    jewelleryImagePath.trim() !== '' &&
+    jewelleryImagePath !== 'null' &&
+    jewelleryImagePath !== 'undefined' &&
+    !jewelleryImagePath.includes('placeholder') &&
+    !jewelleryImagePath.includes('default')
+  ) {
+    jewelryImage = `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${jewelleryImagePath.replace(/^\//, '')}`;
+  }
+  let bankManagerName = '';
+  if (bankFields && typeof bankFields === 'object') {
+    bankManagerName = bankFields.bankManagerName || '';
+  }
+  return {
+    branchCode: data.selectedBranch,
+    customerName: customerDetails?.customerName || '',
+    address: customerDetails?.address || '',
+    mobile: customerDetails?.phone || '',
+    accountNumber: customerDetails?.accountNumber || '',
+    pouchNumber: customerDetails?.pouchNo || '',
+    appraisalDate: now.toLocaleDateString('en-GB', { timeZone: 'Asia/Kolkata' }),
+    apprenticeType: data.apprenticeType,
+    reApprenticeName: data.reApprenticeName || '',
+    purityTestMethod: (selectedTests || []).join(', '),
+    place: data.selectedBranch,
+    date: now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' }),
+    jewelryImage,
+    jewellerPhoto: (`${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${appConfig?.companyLogo?.replace(/^\//, '')}`) || '',
+    jewellerName: appConfig?.companyName || '',
+    jewellerSubtitle: 'Goldsmith and Valuer',
+    jewellerPhone: appConfig?.companyPhone || '',
+    jewellerMobile: appConfig?.companyMobile || '',
+    jewellerAddress: appConfig?.companyAddress || '',
+    jewellerPhone: `Phone: ${appConfig?.companyPhone || ''}`,
+    jewellerEmail: `Email: ${appConfig?.companyEmail || ''}`,
+    jewellerAccount: `A/c no: ${bankDetails?.accountNo || '123123123'}`,
+    jewellerMembership: `IOV membership No. : ${appConfig?.membershipNo || "V123-42-313000"}`,
+    goldRateDate: now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' }),
+    goldItems,
+    totalUnits: formatToTwoDecimals(totalUnits),
+    totalGrossWeight: formatToThreeDecimals(totalGrossWeight),
+    totalNetWeight: formatToThreeDecimals(totalNetWeight),
+    totalValue: formatToTwoDecimals(totalApproxValue),
+    valuations,
+    bankManagerName,
+  };
+} 

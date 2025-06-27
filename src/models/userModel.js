@@ -55,6 +55,14 @@ UserSchema.statics.ensureAdminUser = async function () {
   }
 };
 
+// Pre-save hook to ensure createdAt/updatedAt are in IST
+UserSchema.pre('save', function(next) {
+  const nowIST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  if (!this.createdAt) this.createdAt = nowIST;
+  this.updatedAt = nowIST;
+  next();
+});
+
 const UserModel = mongoose.model("User", UserSchema);
 
 export default UserModel;
