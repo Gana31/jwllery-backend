@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import moment from 'moment-timezone';
 
 const AppraisalSchema = new mongoose.Schema(
   {
@@ -19,6 +20,16 @@ AppraisalSchema.pre('save', function(next) {
   this.updatedAt = nowIST;
   next();
 });
+
+AppraisalSchema.virtual('pdfGeneratedAtIST').get(function() {
+  if (this.pdfGeneratedAt) {
+    return moment(this.pdfGeneratedAt).tz('Asia/Kolkata').format('YYYY-MM-DD hh:mm:ss A');
+  }
+  return null;
+});
+
+AppraisalSchema.set('toJSON', { virtuals: true });
+AppraisalSchema.set('toObject', { virtuals: true });
 
 const AppraisalModel = mongoose.model("Appraisal", AppraisalSchema);
 export default AppraisalModel; 

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import moment from 'moment-timezone';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -33,6 +34,11 @@ const UserSchema = new mongoose.Schema(
       value: String,
       expiresAt: Date,
     },
+    location: {
+      latitude: { type: Number },
+      longitude: { type: Number },
+      updatedAt: { type: Date }
+    },
   },
   {
     timestamps: true,
@@ -62,6 +68,18 @@ UserSchema.pre('save', function(next) {
   this.updatedAt = nowIST;
   next();
 });
+
+UserSchema.virtual('location.updatedAtIST').get(function() {
+  if (this.location && this.location.updatedAt) {
+    return moment(this.location.updatedAt)
+      .tz('Asia/Kolkata')
+      .format('YYYY-MM-DD hh:mm:ss A');
+  }
+  return null;
+});
+
+UserSchema.set('toJSON', { virtuals: true });
+UserSchema.set('toObject', { virtuals: true });
 
 const UserModel = mongoose.model("User", UserSchema);
 

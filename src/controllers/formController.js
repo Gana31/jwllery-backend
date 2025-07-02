@@ -4,6 +4,7 @@ import BankModel from "../models/BankModel.js";
 import path from "path";
 import puppeteer from "puppeteer";
 import AppraisalModel from "../models/AppraisalModel.js";
+import moment from 'moment-timezone';
 
 // Sanitize filename for file system compatibility
 const sanitizeFileName = (name) => {
@@ -78,7 +79,7 @@ export const getAllPdfs = catchAsyncError(async (req, res, next) => {
       .sort(sort)
       .skip(skip)
       .limit(parseInt(limit))
-      .lean();
+      .lean({ virtuals: true });
     
     // Get S3 base URL from app config
     const appConfig = await getAppConfig();
@@ -114,6 +115,9 @@ export const getAllPdfs = catchAsyncError(async (req, res, next) => {
         createdBy: pdf.createdBy || 'Unknown',
         bankName: pdf.formData?.selectedBank || pdf.formData?.bankName || 'N/A',
         pdfGeneratedAt: pdf.pdfGeneratedAt,
+        pdfGeneratedAtIST: pdf.pdfGeneratedAt
+          ? moment(pdf.pdfGeneratedAt).tz('Asia/Kolkata').format('YYYY-MM-DD hh:mm A')
+          : undefined,
         createdAt: pdf.createdAt,
         pdfUrl: pdfUrl, // Full S3 URL for direct access
         pdfPath: pdf.pdfPath // Keep relative path for reference
@@ -134,7 +138,6 @@ export const getAllPdfs = catchAsyncError(async (req, res, next) => {
         s3BaseUrl,
       }
     };
-
     res.status(200).json(response);
   } catch (error) {
     console.error('Error in getAllPdfs:', error);
