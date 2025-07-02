@@ -27,6 +27,8 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
     totalGoldPerGram += parseFloat(item.ratePerGram || 0);
   }
   const now = new Date();
+  // Signature URL
+  const signatureUrl = appConfig?.signature ? `${appConfig.s3BaseUrl?.replace(/\/$/, '')}/${appConfig.signature.replace(/^\//, '')}` : '';
   return {
     bankName: data.selectedBank,
     branchName: data.selectedBranch,
@@ -85,6 +87,7 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
       hour: '2-digit', minute: '2-digit', second: '2-digit',
       hour12: false,
       timeZone: 'Asia/Kolkata'
-    })
+    }),
+    signatureUrl,
   };
 } 

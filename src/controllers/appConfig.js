@@ -33,6 +33,10 @@ export const updateAppConfig = catchAsyncError(async (req, res, next) => {
       const uploadResult = await uploadAppImageToS3(req.files.companyLogo[0]);
       updateData.companyLogo = uploadResult.path;
     }
+    if (req.files && req.files.signature && req.files.signature[0]) {
+      const uploadResult = await uploadAppImageToS3(req.files.signature[0]);
+      updateData.signature = uploadResult.path;
+    }
 
     // Update the AppConfig document
     const updatedConfig = await AppConfigModel.findOneAndUpdate(

@@ -253,24 +253,30 @@
         /* Row 9 - Signatures */
         .signatures-section {
             display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            margin-bottom: 0%;
+            width: 100%;
+            margin-top: 20px;
         }
 
         .signature-column {
-            width: 30%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            min-height: 80px;
+            max-height: 140px;
+            overflow: hidden;
             text-align: center;
         }
 
-        .signature-space {
-            height: 60px;
-            border-bottom: 1px solid black;
-            margin-bottom: 10px;
+        .signature-column img.signature-img {
+            height: 100px;
+            width: 180px;
+           
         }
 
         .signature-text {
-            font-size: 11px;
+            margin-top: 2px;
             font-weight: bold;
         }
 
@@ -512,22 +518,16 @@
         <!-- Row 9: Signatures -->
         <div class="signatures-section">
             <div class="signature-column">
-                <div class="signature-space"></div>
-                <div class="signature-text">
-                    Name and Signature of the Borrower
-                </div>
+                <div class="signature-text">Name and Signature of the Borrower</div>
             </div>
             <div class="signature-column">
-                <div class="signature-space"></div>
-                <div class="signature-text">
-                    Authorised Signatory Anand Jewellers
-                </div>
+                <% if (data.signatureUrl) { %>
+                  <img src="<%= data.signatureUrl %>" alt="Signature" class="signature-img" />
+                <% } %>
+                <div class="signature-text">Authorised Signatory Shreenath Jewellers</div>
             </div>
             <div class="signature-column">
-                <div class="signature-space"></div>
-                <div class="signature-text">
-                    Branch Manager PNB
-                </div>
+                <div class="signature-text">Branch Manager PNB</div>
             </div>
         </div>
     </div>

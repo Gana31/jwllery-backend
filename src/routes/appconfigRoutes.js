@@ -8,7 +8,8 @@ appconfigRouter.put(
   "/app-config",
   upload.fields([
     { name: 'splashScreenLogo', maxCount: 1 },
-    { name: 'companyLogo', maxCount: 1 }
+    { name: 'companyLogo', maxCount: 1 },
+    { name: 'signature', maxCount: 1 }
   ]),
   updateAppConfig
 );

@@ -261,24 +261,32 @@
         /* ROW 4: Three columns for signatures */
         .row-4 {
             display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            font-size: 12px;
+            width: 100%;
+            margin-top: 20px;
         }
-
         .signature-column {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            min-height: 80px;
+            max-height: 80px;
+            overflow: hidden;
             text-align: center;
-            padding: 0 10px;
         }
-
+        .signature-column img.signature-img {
+            height: 60px;
+            width: 180px;
+            object-fit: contain;
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
         .signature-line {
-            border-top: 1px solid #000;
-            margin-top: 40px;
-            padding-top: 5px;
+            margin-top: 2px;
             font-weight: bold;
         }
-
         .signature-subtitle {
             font-size: 9px;
             margin-top: 3px;
@@ -422,7 +430,7 @@
                       <% } %> by me on
                     <strong>
                         <%= appraisalDate %>
-                    </strong> in the presence of <strong>Shri/Smt : <%= bankManagerName %> (Cash in Charge)</strong><br>
+                    </strong> in the presence of <strong>Shri/Smt : <%= bankManagerName && bankManagerName.trim() ? bankManagerName : 'Branch Manager' %> (Cash in Charge)</strong><br>
                     and the exact weight, Purity of the metal and market value of each item as on date are indicate
                     below:
                 </div>
@@ -561,17 +569,15 @@
         <div class="row-4">
             <div class="signature-column">
                 <div class="signature-line">Authorised Signatory</div>
-                <div class="signature-subtitle">
-                </div>
-            </div>
-
-            <div class="signature-column">
-                <div class="signature-line">
-                    For <%= jewellerName %>
-                </div>
                 <div class="signature-subtitle"></div>
             </div>
-
+            <div class="signature-column">
+                <% if (signatureUrl) { %>
+                  <img src="<%= signatureUrl %>" alt="Signature" class="signature-img" />
+                <% } %>
+                <div class="signature-line">For <%= jewellerName %></div>
+                <div class="signature-subtitle"></div>
+            </div>
             <div class="signature-column">
                 <div class="signature-line"> For <%= customerName %></div>
                 <div class="signature-subtitle">Name And Signature Of the Borrower</div>

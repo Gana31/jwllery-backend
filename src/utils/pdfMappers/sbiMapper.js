@@ -43,6 +43,8 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
   if (bankFields && typeof bankFields === 'object') {
     bankManagerName = bankFields.bankManagerName || '';
   }
+  // Signature URL
+  const signatureUrl = appConfig?.signature ? `${appConfig.s3BaseUrl?.replace(/\/$/, '')}/${appConfig.signature.replace(/^\//, '')}` : '';
   return {
     branchCode: data.selectedBranch,
     customerName: customerDetails?.customerName || '',
@@ -75,5 +77,6 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     totalValue: formatToTwoDecimals(totalApproxValue),
     valuations,
     bankManagerName,
+    signatureUrl,
   };
 } 

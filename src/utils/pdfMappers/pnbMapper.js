@@ -55,6 +55,9 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
   const placeName = data.selectedBranch || '';
   const certificateDate = now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
 
+  // Signature URL
+  const signatureUrl = appConfig?.signature ? `${s3BaseUrl}/${appConfig.signature.replace(/^\//, '')}` : '';
+
   // Summary table data
   const summaryData = (Array.isArray(selectedValuation) ? selectedValuation : []).map(percentage => {
     const eligibility = totalValue * (percentage / 100);
@@ -126,5 +129,6 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     jewelleryImage,
     jewelleryImageText: 'JEWELLERY IMAGE',
     jewelleryImageAlt: 'Jewellery Image',
+    signatureUrl,
   };
 } 

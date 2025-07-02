@@ -51,6 +51,10 @@ const AppConfigSchema = new mongoose.Schema(
       type: String,
       default: "Goldsmith and Valuer",
     },
+    signature: {
+      type: String,
+      default: "",
+    },
     membershipNo: {
       type: String,
       required: false,
@@ -63,7 +67,7 @@ const AppConfigSchema = new mongoose.Schema(
 );
 
 // List all image/pdf fields for S3 URL generation
-AppConfigSchema.statics.s3Fields = ['splashScreenLogo','companyLogo'];
+AppConfigSchema.statics.s3Fields = ['splashScreenLogo','companyLogo','signature'];
 
 
 // Static method to ensure a default AppConfig document exists
