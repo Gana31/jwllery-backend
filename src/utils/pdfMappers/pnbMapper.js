@@ -53,7 +53,7 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
   // Date and place
   const now = new Date();
   const placeName = data.selectedBranch || '';
-  const certificateDate = now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' });
+  const certificateDate = now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' });
 
   // Signature URL
   const signatureUrl = appConfig?.signature ? `${s3BaseUrl}/${appConfig.signature.replace(/^\//, '')}` : '';

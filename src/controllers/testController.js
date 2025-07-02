@@ -1,5 +1,18 @@
 import path from 'path';
 
+function formatDateTimeAMPM(date) {
+  return new Date(date).toLocaleString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    timeZone: 'Asia/Kolkata'
+  });
+}
+
 const company = {
   _id: "6852e0a9b9be203c60cc470c",
   companyName: "Shreenath jewellers",
@@ -22,6 +35,7 @@ const company = {
 const getFullUrl = (url) => url && !url.startsWith('http') ? `${company.s3BaseUrl.replace(/\/$/, '')}/${url.replace(/^\//, '')}` : url;
 
 export const renderUnionTest = (req, res) => {
+  const now = new Date();
   const data = {
     bankName: 'Union Bank Of India',
     branchName: 'Main Branch',
@@ -78,13 +92,14 @@ export const renderUnionTest = (req, res) => {
     certifiedPurity: '22.00',
     certifiedLoanAmount: 95000,
     selectedTests: ['TouchStone test', 'Acid Test'],
-    testDate: '01-01-2024 10:00:00',
+    testDate: formatDateTimeAMPM(now),
     signatureUrl: getFullUrl(company.signature),
   };
   res.render(path.join(process.cwd(), 'views', 'uiniontest.ejs'), { data });
 };
 
 export const renderPnbTest = (req, res) => {
+  const now = new Date();
   const data = {
     companyName: company.companyName,
     companyTagline: company.typeOfBusiness,
@@ -131,7 +146,7 @@ export const renderPnbTest = (req, res) => {
       { goldType: 'Swarna Loan 70%', rate: 3500, valuation: '₹ 147500', eligibility: '₹ 103250' },
     ],
     placeName: 'Main Branch',
-    certificateDate: '01-01-2024',
+    certificateDate: formatDateTimeAMPM(now),
     jewelleryImage: 'https://dummyimage.com/150x100/cccccc/000.png&text=Jewellery',
     jewelleryImageAlt: 'Jewellery Image',
     signatureUrl: getFullUrl(company.signature),
@@ -140,6 +155,7 @@ export const renderPnbTest = (req, res) => {
 };
 
 export const renderSbiTest = (req, res) => {
+  const now = new Date();
   const data = {
     branchCode: 'Main Branch',
     customerName: 'Rahul Sharma',
@@ -147,12 +163,12 @@ export const renderSbiTest = (req, res) => {
     mobile: '9876543210',
     accountNumber: '111122223333',
     pouchNumber: 'BAG001',
-    appraisalDate: '01-01-2024',
+    appraisalDate: formatDateTimeAMPM(now),
     apprenticeType: 'apprentice',
     reApprenticeName: '',
     purityTestMethod: 'TouchStone test, Acid Test',
     place: 'Main Branch',
-    date: '01-01-2024',
+    date: formatDateTimeAMPM(now),
     jewelryImage: 'https://dummyimage.com/150x100/cccccc/000.png&text=Jewellery',
     jewellerPhoto: getFullUrl(company.companyLogo),
     jewellerName: company.companyName,
@@ -163,7 +179,7 @@ export const renderSbiTest = (req, res) => {
     jewellerEmail: company.companyEmail,
     jewellerAccount: 'A/c no: 1234567890',
     jewellerMembership: `IOV membership No. : ${company.membershipNo}`,
-    goldRateDate: '01-01-2024',
+    goldRateDate: formatDateTimeAMPM(now),
     goldItems: [
       { description: 'Gold Ring', units: 2, purity: 22, grossWeight: 10.5, netWeight: 10.0, goldRate: 5000, approxValue: 50000 },
       { description: 'Gold Chain', units: 1, purity: 22, grossWeight: 20.0, netWeight: 19.5, goldRate: 5000, approxValue: 97500 },

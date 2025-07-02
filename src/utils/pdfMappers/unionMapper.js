@@ -82,12 +82,7 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
     certifiedPurity: '22.00',
     certifiedLoanAmount: formatToTwoDecimals(getBankFieldValue(bankFields, 'loanToBeSanctioned')),
     selectedTests: selectedTests,
-    testDate: now.toLocaleString('en-GB', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false,
-      timeZone: 'Asia/Kolkata'
-    }),
+    testDate: now.toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' }),
     signatureUrl,
   };
 } 
