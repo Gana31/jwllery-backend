@@ -6,28 +6,41 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  # runs on your EC2
+    runs-on: self-hosted  # This runs on your EC2 instance
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build (if applicable)
-        run: npm run build --if-present
-
-      - name: Run tests (if applicable)
-        run: npm test || echo "No tests to run"
-
-      - name: Copy code to ~/jwllery-backend
+      - name: Clean old code
         run: |
           rm -rf /home/ubuntu/jwllery-backend/*
+          mkdir -p /home/ubuntu/jwllery-backend
+
+      - name: Copy new code (without node_modules)
+        run: |
           cp -r $GITHUB_WORKSPACE/* /home/ubuntu/jwllery-backend/
           cp -r $GITHUB_WORKSPACE/.* /home/ubuntu/jwllery-backend/ || true
 
-      - name: PM2 Restart
+      - name: Install dependencies inside project
+        run: |
+          cd /home/ubuntu/jwllery-backend
+          npm install
+
+      - name: Build project (if applicable)
+        run: |
+          cd /home/ubuntu/jwllery-backend
+          npm run build --if-present
+
+      - name: Run tests (optional)
+        run: |
+          cd /home/ubuntu/jwllery-backend
+          npm test || echo "No tests to run"
+
+      - name: Restart PM2 process
         run: |
           cd /home/ubuntu/jwllery-backend
           pm2 reload jewellery-api || pm2 start index.js --name jewellery-api
+
+      - name: Save PM2 process list (optional, first-time only)
+        run: pm2 save
