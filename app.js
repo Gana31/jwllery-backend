@@ -34,7 +34,11 @@ app.get('/',(req,res)=>{
     res.json({message:'Welcome to Evlocator server'});
 })
 
-app.use('/api/v1',authRoutes,appconfigRouter,bankRouter,formRouter,userRoutes);
+app.use('/api/v1', authRoutes);
+app.use('/api/v1', appconfigRouter);
+app.use('/api/v1', bankRouter);
+app.use('/api/v1', formRouter);
+app.use('/api/v1', userRoutes);
 app.use('/api/v1/logs', logRoutes);
 app.use('/logs', logDashboard);
 

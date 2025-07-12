@@ -28,6 +28,26 @@ const getTodayDateFolder = () => {
   return now.toISOString().split("T")[0]; // YYYY-MM-DD
 };
 
+// Exponential backoff helper for S3 operations
+async function withExponentialBackoff(fn, maxRetries = 5, baseDelay = 500) {
+  let attempt = 0;
+  while (true) {
+    try {
+      return await fn();
+    } catch (err) {
+      // Check for S3 SlowDown error
+      const isSlowDown = err && err.code === 'SlowDown';
+      if (isSlowDown && attempt < maxRetries) {
+        const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 100;
+        await new Promise((res) => setTimeout(res, delay));
+        attempt++;
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
 export const deleteFileFromS3 = async (key) => {
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -35,7 +55,7 @@ export const deleteFileFromS3 = async (key) => {
   };
 
   try {
-    await s3.deleteObject(params).promise();
+    await withExponentialBackoff(() => s3.deleteObject(params).promise());
   } catch (err) {
     console.error("S3 Delete Error:", err.message);
     throw new Error("Failed to delete old image from S3");
@@ -55,7 +75,7 @@ export const uploadImageToS3 = async (customerName, file) => {
     ContentType: file.mimetype,
   };
 
-  await s3.upload(uploadParams).promise();
+  await withExponentialBackoff(() => s3.upload(uploadParams).promise());
   return {
     fullUrl: `${config.baseS3Url}/${key}`,
     path: key, // store this in DB
@@ -75,7 +95,7 @@ export const uploadPdfToS3 = async (customerName, file) => {
     ContentType: "application/pdf",
   };
 
-  await s3.upload(uploadParams).promise();
+  await withExponentialBackoff(() => s3.upload(uploadParams).promise());
   return {
     fullUrl: `${config.baseS3Url}/${key}`,
     path: key, // store this in DB
@@ -95,7 +115,7 @@ export const uploadAppImageToS3 = async (file) => {
     ContentType: file.mimetype,
   };
 
-  await s3.upload(uploadParams).promise();
+  await withExponentialBackoff(() => s3.upload(uploadParams).promise());
   return {
     fullUrl: `${config.baseS3Url}/${key}`,
     path: key,
@@ -116,7 +136,7 @@ export const uploadBankLogoToS3 = async (bankName, file) => {
     ContentType: file.mimetype,
   };
 
-  await s3.upload(uploadParams).promise();
+  await withExponentialBackoff(() => s3.upload(uploadParams).promise());
   return {
     fullUrl: `${config.baseS3Url}/${key}`,
     path: key,
