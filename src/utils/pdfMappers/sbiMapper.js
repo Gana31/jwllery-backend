@@ -1,6 +1,15 @@
 export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments ,bankFields}) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
+  
+  // Indian currency formatter
+  const formatIndianCurrency = (value) => {
+    const num = parseFloat(value) || 0;
+    return num.toLocaleString('en-IN', {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    });
+  };
   const goldItems = ornaments.map(item => {
     const netWeight = parseFloat(item['Net Weight (Gross Weight less Vaux, Stones, dust etc) Grams'] || item['netWeight'] || '0') || 0;
     const goldRate = parseFloat(item['Gold Rate Per Carat 22/20/18'] || item['goldRate'] || '0') || 0;
@@ -24,7 +33,7 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
   });
   const valuations = (selectedValuation || []).map(percentage => ({
     percentage: formatToTwoDecimals(percentage),
-    amount: formatToTwoDecimals((totalApproxValue * (percentage / 100)))
+    amount: formatIndianCurrency((totalApproxValue * (percentage / 100)))
   }));
   const now = new Date();
   let jewelryImage = '';
@@ -74,7 +83,7 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     totalUnits: formatToTwoDecimals(totalUnits),
     totalGrossWeight: formatToThreeDecimals(totalGrossWeight),
     totalNetWeight: formatToThreeDecimals(totalNetWeight),
-    totalValue: formatToTwoDecimals(totalApproxValue),
+    totalValue: formatIndianCurrency(totalApproxValue),
     valuations,
     bankManagerName,
     signatureUrl,

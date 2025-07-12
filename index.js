@@ -24,13 +24,14 @@ const startServer = async () => {
     io.on('connection', (socket) => {
 
 
-      socket.on('locationUpdate', async ({ userId, latitude, longitude }) => {
+      socket.on('locationUpdate', async ({ userId, latitude, longitude, accuracy }) => {
         // console.log(`Location update received ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:mm:ss')}:`, userId, latitude, longitude);
         try {
           await User.findByIdAndUpdate(userId, {
             location: {
               latitude,
               longitude,
+              accuracy,
               updatedAt: new Date()
             }
           });

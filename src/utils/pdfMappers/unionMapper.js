@@ -1,7 +1,15 @@
 export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, bankFields, ornaments, reqUser }) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
-
+  
+  // Indian currency formatter
+  const formatIndianCurrency = (value) => {
+    const num = parseFloat(value) || 0;
+    return num.toLocaleString('en-IN', {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    });
+  };
   function getBankFieldValue(bankFields, fieldName) {
     const field = Array.isArray(bankFields) ? bankFields.find(f => f.name === fieldName) : undefined;
     return field && field.value !== undefined ? field.value : '';
@@ -17,15 +25,36 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
     ratePerGram: formatToTwoDecimals(item.ratePerGram || 0),
     value: formatToTwoDecimals(parseFloat(item['Value Of the Gold Ornaments']?.replace(/,/g, '') || 0))
   }));
-  let totalUnits = 0, totalGrossWeight = 0, totalNetWeight = 0, totalEquivalentWeight = 0, totalValue = 0 , totalGoldPerGram = 0;
+  let totalUnits = 0, totalGrossWeight = 0, totalNetWeight = 0, totalEquivalentWeight = 0, totalValue = 0;
+  let ratePerGramValues = [];
   for (const item of goldItems) {
     totalUnits += parseFloat(item.units || 0);
     totalGrossWeight += parseFloat(item.grossWeight || 0);
     totalNetWeight += parseFloat(item.netWeight || 0);
     totalEquivalentWeight += parseFloat(item.equivalentWeight || 0);
     totalValue += parseFloat(item.value || 0);
-    totalGoldPerGram += parseFloat(item.ratePerGram || 0);
+    ratePerGramValues.push(parseFloat(item.ratePerGram || 0));
   }
+  
+  // Get common rate per gram (most frequent value)
+  const getCommonRatePerGram = (values) => {
+    if (values.length === 0) return 0;
+    const frequency = {};
+    values.forEach(val => {
+      frequency[val] = (frequency[val] || 0) + 1;
+    });
+    let maxFreq = 0;
+    let commonValue = values[0];
+    Object.keys(frequency).forEach(val => {
+      if (frequency[val] > maxFreq) {
+        maxFreq = frequency[val];
+        commonValue = parseFloat(val);
+      }
+    });
+    return commonValue;
+  };
+  
+  const commonRatePerGram = getCommonRatePerGram(ratePerGramValues);
   const now = new Date();
   // Signature URL
   const signatureUrl = appConfig?.signature ? `${appConfig.s3BaseUrl?.replace(/\/$/, '')}/${appConfig.signature.replace(/^\//, '')}` : '';
@@ -62,25 +91,26 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
     totalGrossWeight: formatToThreeDecimals(totalGrossWeight),
     totalNetWeight: formatToThreeDecimals(totalNetWeight),
     totalEquivalentWeight: formatToThreeDecimals(totalEquivalentWeight),
-    totalValue: formatToTwoDecimals(totalValue),
+    totalValue: formatIndianCurrency(totalValue),
     bankCardRateWeight: formatToThreeDecimals(totalEquivalentWeight),
-    totalGoldPerGram: formatToTwoDecimals(totalGoldPerGram),
-    bankCardRate: formatToTwoDecimals(totalGoldPerGram),
-    bankCardValue: formatToTwoDecimals(totalValue),
-    eligibleAmount: formatToTwoDecimals(totalValue),
-    loanRequested: formatToTwoDecimals(getBankFieldValue(bankFields, 'loanRequestedByBorrower')),
-    lessMargin: formatToTwoDecimals(getBankFieldValue(bankFields, 'lessMargin35')),
-    minimumOfAboveTwo: formatToTwoDecimals(getBankFieldValue(bankFields, 'minimumOfAboveTwo')),
-    loanAmount: formatToTwoDecimals(getBankFieldValue(bankFields, 'loanToBeSanctioned')),
-    safetyGrant: formatToTwoDecimals(getBankFieldValue(bankFields, 'safetyGrant')),
-    marketRateValue: formatToTwoDecimals(getBankFieldValue(bankFields, 'goldAsPerMarketRate')),
+    totalGoldPerGram: formatToTwoDecimals(commonRatePerGram),
+    bankCardRate: formatToTwoDecimals(commonRatePerGram),
+    apprenticeType: data.apprenticeType,
+    bankCardValue: formatIndianCurrency(totalValue),
+    eligibleAmount: formatIndianCurrency(totalValue),
+    loanRequested: formatIndianCurrency(bankFields.loanRequestedByBorrower),
+    lessMargin: formatIndianCurrency(bankFields.lessMargin35),
+    minimumOfAboveTwo: formatIndianCurrency(bankFields.minimumOfAboveTwo),
+    loanAmount: formatIndianCurrency(bankFields.loanToBeSanctioned),
+    safetyGrant: formatIndianCurrency(bankFields.safetyGrant),
+    marketRateValue: formatIndianCurrency(bankFields.goldAsPerMarketRate),
     verifierName: reqUser?.username || '',
     verifierFatherName: customerDetails.fatherName || '',
     verifierAge: customerDetails.age || '',
     verifierAddress: customerDetails.address || '',
     certifiedWeight: formatToThreeDecimals(totalEquivalentWeight),
     certifiedPurity: '22.00',
-    certifiedLoanAmount: formatToTwoDecimals(getBankFieldValue(bankFields, 'loanToBeSanctioned')),
+    certifiedLoanAmount: formatIndianCurrency(getBankFieldValue(bankFields, 'loanToBeSanctioned')),
     selectedTests: selectedTests,
     testDate: now.toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' }),
     signatureUrl,

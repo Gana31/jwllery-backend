@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "setup-logging": "node scripts/setup-logging.js",
+    "setup-lifecycle": "node scripts/s3-lifecycle.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +26,13 @@
     "nodemon": "^3.1.10",
     "puppeteer": "^24.10.2",
     "socket.io": "^4.8.1",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "winston": "^3.15.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "commander": "^12.0.0",
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.3"
   }
 }

@@ -196,4 +196,33 @@ export const renderSbiTest = (req, res) => {
     signatureUrl: getFullUrl(company.signature),
   };
   res.render(path.join(process.cwd(), 'views', 'sbiTemplate.ejs'), data);
+};
+
+export const renderBarodaTemplateTest = (req, res) => {
+  const data = {
+    bankDetails: { 
+      branch: "Hal chinchwad",
+      logoUrl: "https://ganeshtest2.s3.ap-south-1.amazonaws.com/banklogos/bankofbaroda/1b7506ae-b7f7-4ca7-b386-72f1d7c3715e.png"
+    },
+    customerDetails: { name: "John Doe", accountNumber: "123456789", address: "Sample Address" },
+    apprenticeType: "apprentice", // This will come from frontend
+    jewellerDetails: { 
+      logoName: "ABC Jewellers", 
+      logoUrl: "https://.com/40x40/000/fff.png&text=Logo", 
+      typeOfBusiness: "Goldsmith and Valuer",
+      address: "123 Main St", 
+      phone: "9876543210",
+      email: "abc@jewellers.com",
+      accountNumber: "ACC123456",
+      iovMembershipNumber: "IOV789"
+    },
+    photoDetails: { photoUrl: "path/to/photo.jpg" },
+    tableContent: [
+      { description: "Gold Ring", grossWeight: "10g", netWeight: "9.5g", carat: "22", marketValue: "₹5,000", caratRate: "₹4,800", remarks: "Good", approxValue: "₹4,900" },
+      { description: "Gold Chain", grossWeight: "20g", netWeight: "19g", carat: "22", marketValue: "₹10,000", caratRate: "₹9,800", remarks: "Excellent", approxValue: "₹9,700" }
+    ],
+    totalDetails: { totalGrossWeight: "30g", totalNetWeight: "28.5g", totalValue: "₹15,000", totalApproxValue: "₹14,600" },
+    loanDetails: { amount: "₹12,000", dueDate: "31/12/2024", tests: ["Touchstone Test", "Acid Test", "XRF Test"] }
+  };
+  res.render('barodaTemplate', data);
 }; 

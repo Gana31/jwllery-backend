@@ -12,6 +12,7 @@ const BankSchema = new mongoose.Schema({
       name: { type: String, required: true },
       label: { type: String, required: true },
       type: { type: String, required: true },
+      role: { type: String, required: false, enum: ["netWeight", "goldRate", "approxValue"] },
       required: { type: Boolean, default: false },
     }
   ],
@@ -37,6 +38,7 @@ const BankSchema = new mongoose.Schema({
     default: []
   },
   valuation: [{ type: Number }],
+  tests: { type: Boolean, required: false ,default: false},
   accountNo: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

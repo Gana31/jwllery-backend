@@ -368,7 +368,7 @@
                     <td><strong><%= data.totalNetWeight || 0 %></strong></td>
                     <td></td>
                     <td><strong><%= data.totalEquivalentWeight || 0 %></strong></td>
-                    <td><strong><%= data.totalGoldPerGram || 0 %></strong></td>
+                    <td></td>
                     <td class="amount"><strong>₹ <%= data.totalValue || 0 %></strong></td>
                 </tr>
             </tbody>
@@ -420,7 +420,12 @@
         
         <!-- Declaration -->
         <div class="declaration">
-            I Mr. <strong><%= data.customerDetails.customerName || '' %></strong> son of Mr. <strong><%= data.customerDetails.fatherName || '' %></strong> aged about <strong><%= data.customerDetails.age || '41' %></strong> Years residing at <strong><%= data.customerDetails.address || '' %></strong> hereby certify that I have checked and weighted the above mentioned gold ornaments /coins/issued by bank/jewellery and the Net Weight of gold there in is <strong><%= data.certifiedWeight || 0 %></strong> Grams of <strong>22</strong> carat purity. I hereby certify that the Bank may safely grant a loan of <strong>₹ <%= data.certifiedLoanAmount || 0 %></strong> /- against pledge of the said gold ornaments /coins issued by bank /jewellery .<br><br>
+            I Mr. <strong><%= data.customerDetails.customerName || '' %></strong> son of Mr. <strong><%= data.customerDetails.fatherName || '' %></strong> aged about <strong><%= data.customerDetails.age || '41' %></strong> Years residing at <strong><%= data.customerDetails.address || '' %></strong> hereby certify that I have
+            <% if (data.apprenticeType === "apprentice") { %>
+                <strong>Appraised </strong>
+              <% } else { %>
+                <strong>Reappraised </strong>
+              <% } %>  and weighted the above mentioned gold ornaments /coins/issued by bank/jewellery and the Net Weight of gold there in is <strong><%= data.certifiedWeight || 0 %></strong> Grams of <strong>22</strong> carat purity. I hereby certify that the Bank may safely grant a loan of <strong>₹ <%= data.safetyGrant || 0 %></strong> /- against pledge of the said gold ornaments /coins issued by bank /jewellery .<br><br>
             I am ready to purchase these gold ornaments/coin issued by banks/jewellery at market rate at any time as and when demanded by the Bank. 
             <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
                 <strong>Tests Done:</strong>

@@ -11,6 +11,7 @@ import { uploadImageToS3, uploadPdfToS3 } from "../utils/s3.js";
 import { sbiRenderData } from '../utils/pdfMappers/sbiMapper.js';
 import { unionRenderData } from '../utils/pdfMappers/unionMapper.js';
 import { pnbRenderData } from '../utils/pdfMappers/pnbMapper.js';
+import { barodaRenderData } from '../utils/pdfMappers/barodaMapper.js';
 
 
 function parseIfJsonString(val) {
@@ -203,6 +204,9 @@ export const generateBankPdf = async (req, res) => {
     } else if (bankType === 'pnb' || bankType === 'punjab national bank.') {
       renderData = pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields });
       templateFile = 'pnbTemplate.ejs';
+    } else if (bankType === 'bank of baroda' || bankType === 'baroda') {
+      renderData = barodaRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields });
+      templateFile = 'barodaTemplate.ejs';
     } else {
       return res.status(400).json({ success: false, message: "Unsupported bank type" });
     }
@@ -210,6 +214,12 @@ export const generateBankPdf = async (req, res) => {
     // Render EJS and generate PDF
     let html;
     if (bankType === 'sbi' || bankType === 'state bank of india') {
+      html = await ejs.renderFile(
+        path.join(process.cwd(), "views", templateFile),
+        { ...renderData },
+        { async: true }
+      );
+    } else if (bankType === 'bank of baroda' || bankType === 'baroda') {
       html = await ejs.renderFile(
         path.join(process.cwd(), "views", templateFile),
         { ...renderData },

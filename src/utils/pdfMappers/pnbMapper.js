@@ -3,6 +3,15 @@ import path from 'path';
 export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields }) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
+  
+  // Indian currency formatter
+  const formatIndianCurrency = (value) => {
+    const num = parseFloat(value) || 0;
+    return num.toLocaleString('en-IN', {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    });
+  };
   const s3BaseUrl = appConfig?.s3BaseUrl?.replace(/\/$/, '') || '';
   // Compose full S3 URLs for logos
   const pnbLogo = bankDetails?.logoPath ? `${s3BaseUrl}/${bankDetails.logoPath.replace(/^\//, '')}` : '';
@@ -65,8 +74,8 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     return {
       goldType: `Swarna Loan ${percentage}%`,
       rate: ratePerGram,
-      valuation: `₹ ${formatToTwoDecimals(totalValue)}`,
-      eligibility: `₹ ${formatToTwoDecimals(eligibility)}`
+      valuation: `₹ ${formatIndianCurrency(totalValue)}`,
+      eligibility: `₹ ${formatIndianCurrency(eligibility)}`
     };
   });
 
@@ -88,6 +97,7 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     customerMobile: customerDetails?.phone || '',
     accountNoCustomer: customerDetails?.accountNumber || '',
     punchNo: customerDetails?.pouchNo || '',
+    apprenticeType: data.apprenticeType,
     goldRate: bankFields.goldRate || '',
     tableHeaders: {
       srNo: 'Sr No',
@@ -110,7 +120,7 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     totalWeight: formatToThreeDecimals(totalGrossWeight),
     totalNetWeight: formatToThreeDecimals(totalNetWeight),
     totalGoldPerGram: formatToThreeDecimals(totalGoldPerGram),
-    totalValue: `₹ ${formatToTwoDecimals(totalValue)}`,
+    totalValue: `₹ ${formatIndianCurrency(totalValue)}`,
     declarationTitle: 'Declaration of the Borrower',
     declarationParagraph1: 'I have not been handed over the above ornaments to the bank without any pressure and in good state of mind for the purpose of obtaining loan from Punjab National Bank. These ornaments are my own and I take full responsibility for it.',
     declarationParagraph2: 'If the above ornaments i also fully agree the above certificate given by Anand Jewellers.',

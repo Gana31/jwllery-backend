@@ -403,7 +403,14 @@
 
         <!-- Row 5: Description -->
         <div class="description">
-            This is to certify that I have verified the Gold Ornaments which are given to me by <strong> Mr./Mrs. <%= data.customerName %> Mobile No. <%= data.customerMobile %> </strong> for taking of Gold Loan from <strong>Punjab National Bank <%= data.branchName %></strong> from weight and value of these ornaments and I take the full responsibility of the same.
+            This is to certify that I have verified the Gold Ornaments which are given to me by <strong> Mr./Mrs. <%= data.customerName %> Mobile No. <%= data.customerMobile %> </strong> 
+            for taking of Gold Loan from <strong>Punjab National Bank <%= data.branchName %></strong> I have checked the purity, weight, and market value of the gold ornaments,
+             which have been  <% if (data.apprenticeType === "apprentice") { %>
+                <strong>Appraised</strong>
+              <% } else { %>
+                <strong>Reappraised</strong>
+              <% } %> 
+            by me, and I take full responsibility of the same.
             <br><br>
         </div>
         <div class="table-header">
@@ -518,7 +525,7 @@
         <!-- Row 9: Signatures -->
         <div class="signatures-section">
             <div class="signature-column">
-                <div class="signature-text">Name and Signature of the Borrower</div>
+                <div class="signature-text"><%= data.customerName %> <br> Name and Signature of the Borrower</div>
             </div>
             <div class="signature-column">
                 <% if (data.signatureUrl) { %>
