@@ -6,26 +6,29 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  # This runs on your EC2 instance
+    runs-on: self-hosted  # GitHub self-hosted runner on your EC2 instance
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Clean old code
+      - name: Sync code to EC2 (excluding .git and others)
         run: |
-          rm -rf /home/ubuntu/jwllery-backend/*
-          mkdir -p /home/ubuntu/jwllery-backend
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.DS_Store' \
+            $GITHUB_WORKSPACE/ /home/ubuntu/jwllery-backend/
 
-      - name: Copy new code (without node_modules)
+      - name: Copy .env if needed
         run: |
-          cp -r $GITHUB_WORKSPACE/* /home/ubuntu/jwllery-backend/
-          cp -r $GITHUB_WORKSPACE/.* /home/ubuntu/jwllery-backend/ || true
+          cp /home/ubuntu/envs/jwllery-backend.env /home/ubuntu/jwllery-backend/.env || echo ".env file not found, skipping..."
 
-      - name: Install dependencies inside project
+      - name: Install dependencies
         run: |
           cd /home/ubuntu/jwllery-backend
-          npm install
+          npm ci --omit=dev
 
       - name: Build project (if applicable)
         run: |
@@ -35,12 +38,12 @@ jobs:
       - name: Run tests (optional)
         run: |
           cd /home/ubuntu/jwllery-backend
-          npm test || echo "No tests to run"
+          npm test || echo "No tests or tests failed, continuing..."
 
       - name: Restart PM2 process
         run: |
           cd /home/ubuntu/jwllery-backend
           pm2 reload jewellery-api || pm2 start index.js --name jewellery-api
 
-      - name: Save PM2 process list (optional, first-time only)
+      - name: Save PM2 process list
         run: pm2 save
