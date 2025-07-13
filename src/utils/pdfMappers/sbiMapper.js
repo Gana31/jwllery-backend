@@ -1,3 +1,19 @@
+// Helper function to conditionally format phone numbers
+const formatPhoneNumbers = (phone, mobile) => {
+  const hasPhone = phone && phone.trim() !== '' && phone !== 'null' && phone !== 'undefined';
+  const hasMobile = mobile && mobile.trim() !== '' && mobile !== 'null' && mobile !== 'undefined';
+  
+  if (hasPhone && hasMobile) {
+    return `Phone: ${phone}, Mobile: ${mobile}`;
+  } else if (hasPhone) {
+    return `Phone: ${phone}`;
+  } else if (hasMobile) {
+    return `Mobile: ${mobile}`;
+  } else {
+    return '';
+  }
+};
+
 export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments ,bankFields}) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
@@ -54,6 +70,10 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
   }
   // Signature URL
   const signatureUrl = appConfig?.signature ? `${appConfig.s3BaseUrl?.replace(/\/$/, '')}/${appConfig.signature.replace(/^\//, '')}` : '';
+  
+  // Format phone numbers conditionally
+  const formattedPhoneNumbers = formatPhoneNumbers(appConfig?.companyPhone, appConfig?.companyMobile);
+  
   return {
     branchCode: data.selectedBranch,
     customerName: customerDetails?.customerName || '',
@@ -71,10 +91,9 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     jewellerPhoto: (`${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${appConfig?.companyLogo?.replace(/^\//, '')}`) || '',
     jewellerName: appConfig?.companyName || '',
     jewellerSubtitle: 'Goldsmith and Valuer',
-    jewellerPhone: appConfig?.companyPhone || '',
-    jewellerMobile: appConfig?.companyMobile || '',
+    jewellerPhone: formattedPhoneNumbers,
+    jewellerMobile: '', // This field is now handled by jewellerPhone
     jewellerAddress: appConfig?.companyAddress || '',
-    jewellerPhone: `Phone: ${appConfig?.companyPhone || ''}`,
     jewellerEmail: `Email: ${appConfig?.companyEmail || ''}`,
     jewellerAccount: `A/c no: ${bankDetails?.accountNo || '123123123'}`,
     jewellerMembership: `IOV membership No. : ${appConfig?.membershipNo || "V123-42-313000"}`,

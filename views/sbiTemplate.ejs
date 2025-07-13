@@ -354,7 +354,7 @@
                     <div>The Branch Manager</div>
                     <div>State Bank Of India</div>
                     <div>
-                        <%= branchCode || '123456' %>
+                        <%= branchCode || '' %>
                     </div>
                 </div>
             </div>
@@ -390,12 +390,8 @@
                 </div>
                 <div class="shop-details">
                     <%= jewellerAddress %><br>
-                    <% if (jewellerPhone && jewellerMobile) { %>
-                       <%= jewellerPhone %> Mobile <%= jewellerMobile %><br>
-                    <% } else if (jewellerPhone) { %>
+                    <% if (jewellerPhone && jewellerPhone.trim() !== '') { %>
                        <%= jewellerPhone %><br>
-                    <% } else if (jewellerMobile) { %>
-                       <%= jewellerMobile %><br>
                     <% } %>
                     <%= jewellerEmail %><br>
                         <strong>

@@ -1,5 +1,21 @@
 import path from 'path';
 
+// Helper function to conditionally format phone numbers
+const formatPhoneNumbers = (phone, mobile) => {
+  const hasPhone = phone && phone.trim() !== '' && phone !== 'null' && phone !== 'undefined';
+  const hasMobile = mobile && mobile.trim() !== '' && mobile !== 'null' && mobile !== 'undefined';
+  
+  if (hasPhone && hasMobile) {
+    return `Phone: ${phone}, Mobile: ${mobile}`;
+  } else if (hasPhone) {
+    return `Phone: ${phone}`;
+  } else if (hasMobile) {
+    return `Mobile: ${mobile}`;
+  } else {
+    return '';
+  }
+};
+
 export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields }) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
@@ -79,6 +95,9 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     };
   });
 
+  // Format phone numbers conditionally
+  const formattedPhoneNumbers = formatPhoneNumbers(appConfig?.companyPhone, appConfig?.companyMobile);
+
   return {
     pnbLogo,
     rateLogo,
@@ -87,8 +106,8 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     companyName: appConfig?.companyName || '',
     companyTagline: appConfig?.typeOfBusiness || '',
     shopAddress: appConfig?.companyAddress || '',
-    phoneNumbers: appConfig?.companyPhone || '',
-    mobileNumbers: appConfig?.companyMobile || '',
+    phoneNumbers: formattedPhoneNumbers,
+    mobileNumbers: '', // This field is now handled by phoneNumbers
     emailAddress: appConfig?.companyEmail || '',
     membershipNo: appConfig?.membershipNo || '',
     accountNo: bankDetails?.accountNo || '',

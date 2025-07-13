@@ -1,3 +1,19 @@
+// Helper function to conditionally format phone numbers
+const formatPhoneNumbers = (phone, mobile) => {
+  const hasPhone = phone && phone.trim() !== '' && phone !== 'null' && phone !== 'undefined';
+  const hasMobile = mobile && mobile.trim() !== '' && mobile !== 'null' && mobile !== 'undefined';
+  
+  if (hasPhone && hasMobile) {
+    return `Phone: ${phone}, Mobile: ${mobile}`;
+  } else if (hasPhone) {
+    return `Phone: ${phone}`;
+  } else if (hasMobile) {
+    return `Mobile: ${mobile}`;
+  } else {
+    return '';
+  }
+};
+
 export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields }) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
@@ -63,6 +79,9 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
 
   // Signature URL
   const signatureUrl = appConfig?.signature ? `${appConfig.s3BaseUrl?.replace(/\/$/, '')}/${appConfig.signature.replace(/^\//, '')}` : '';
+  
+  // Format phone numbers conditionally
+  const formattedPhoneNumbers = formatPhoneNumbers(appConfig?.companyPhone, appConfig?.companyMobile);
 
   return {
     bankDetails: {
@@ -80,7 +99,7 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
       logoUrl: appConfig?.companyLogo ? `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${appConfig.companyLogo.replace(/^\//, '')}` : '',
       typeOfBusiness: appConfig?.typeOfBusiness || 'Goldsmith and Valuer',
       address: appConfig?.companyAddress || '',
-      phone: appConfig?.companyPhone || '',
+      phone: formattedPhoneNumbers,
       email: appConfig?.companyEmail || '',
       accountNumber: bankDetails?.accountNo || '',
       iovMembershipNumber: appConfig?.membershipNo || ''

@@ -1,3 +1,19 @@
+// Helper function to conditionally format phone numbers
+const formatPhoneNumbers = (phone, mobile) => {
+  const hasPhone = phone && phone.trim() !== '' && phone !== 'null' && phone !== 'undefined';
+  const hasMobile = mobile && mobile.trim() !== '' && mobile !== 'null' && mobile !== 'undefined';
+  
+  if (hasPhone && hasMobile) {
+    return `Phone: ${phone}, Mobile: ${mobile}`;
+  } else if (hasPhone) {
+    return `Phone: ${phone}`;
+  } else if (hasMobile) {
+    return `Mobile: ${mobile}`;
+  } else {
+    return '';
+  }
+};
+
 export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, bankFields, ornaments, reqUser }) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
@@ -58,6 +74,10 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
   const now = new Date();
   // Signature URL
   const signatureUrl = appConfig?.signature ? `${appConfig.s3BaseUrl?.replace(/\/$/, '')}/${appConfig.signature.replace(/^\//, '')}` : '';
+  
+  // Format phone numbers conditionally
+  const formattedPhoneNumbers = formatPhoneNumbers(appConfig?.companyPhone, appConfig?.companyMobile);
+  
   return {
     bankName: data.selectedBank,
     branchName: data.selectedBranch,
@@ -68,8 +88,8 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
       jewellerName: appConfig?.companyName || '',
       jewellerSubtitle: appConfig?.typeOfBusiness || '',
       jewellerAddress: appConfig?.companyAddress || '',
-      jewellerPhone: appConfig?.companyPhone || '',
-      jewellerMobile: appConfig?.companyMobile || '',
+      jewellerPhone: formattedPhoneNumbers,
+      jewellerMobile: '', // This field is now handled by jewellerPhone
       jewellerEmail: appConfig?.companyEmail || '',
       jewellerUbiAc: bankDetails?.accountNo || '000000000',
       membershipNo: appConfig?.membershipNo || '',

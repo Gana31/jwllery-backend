@@ -203,7 +203,9 @@
                 </div>
                 <p><%= jewellerDetails.typeOfBusiness %></p>
                 <p><strong>Address:</strong> <%= jewellerDetails.address %></p>
-                <p><strong>Phone:</strong> <%= jewellerDetails.phone %></p>
+                <% if (jewellerDetails.phone && jewellerDetails.phone.trim() !== '') { %>
+                    <p><%= jewellerDetails.phone %></p>
+                <% } %>
                 <p><strong>Email:</strong> <%= jewellerDetails.email %></p>
                 <p><strong>Account Number:</strong> <%= jewellerDetails.accountNumber %></p>
                 <p><strong>IOV Membership No.:</strong> <%= jewellerDetails.iovMembershipNumber %></p>

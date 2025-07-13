@@ -304,12 +304,8 @@
                     <%= data.jwellerDetails.jewellerName || '' %></div>
                 <div class="jeweller-tagline"><%= data.jwellerDetails.jewellerSubtitle || '' %></div>
                 <div><%= data.jwellerDetails.jewellerAddress || '' %></div>
-                <% if (data.jwellerDetails.jewellerPhone && data.jwellerDetails.jewellerMobile) { %>
-                  <div><%= data.jwellerDetails.jewellerPhone %> Mobile <%= data.jwellerDetails.jewellerMobile %></div>
-                <% } else if (data.jwellerDetails.jewellerPhone) { %>
+                <% if (data.jwellerDetails.jewellerPhone && data.jwellerDetails.jewellerPhone.trim() !== '') { %>
                   <div><%= data.jwellerDetails.jewellerPhone %></div>
-                <% } else if (data.jwellerDetails.jewellerMobile) { %>
-                  <div><%= data.jwellerDetails.jewellerMobile %></div>
                 <% } %>
                 <div>Email :- <%= data.jwellerDetails.jewellerEmail || '' %></div>
                 <div>UBI A/c No. :- <%= data.jwellerDetails.jewellerUbiAc || '' %></div>

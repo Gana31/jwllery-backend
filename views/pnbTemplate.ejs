@@ -346,13 +346,9 @@
                     <div><%= data.companyTagline %></div>
                  
                     <div><%= data.shopAddress %></div>
-                    <div><strong>Phone </strong>:  <% if (data.phoneNumbers && data.mobileNumbers) { %>
-                        <%= data.phoneNumbers %> Mobile <%= data.mobileNumbers %><br>
-                      <% } else if (data.phoneNumbers) { %>
-                        <%= data.phoneNumbers %><br>
-                      <% } else if (data.mobileNumbers) { %>
-                        <%= data.mobileNumbers %><br>
-                      <% } %></div>
+                    <% if (data.phoneNumbers && data.phoneNumbers.trim() !== '') { %>
+                        <div><%= data.phoneNumbers %></div>
+                    <% } %>
                     <div><strong>Email </strong>: <%= data.emailAddress %></div>
                     <div><strong>IOV membership No. </strong>: <%= data.membershipNo %></div>
                     <div><strong>PNB a/c No. </strong>: <%= data.accountNo %></div>
