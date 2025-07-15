@@ -12,6 +12,8 @@ import { sbiRenderData } from '../utils/pdfMappers/sbiMapper.js';
 import { unionRenderData } from '../utils/pdfMappers/unionMapper.js';
 import { pnbRenderData } from '../utils/pdfMappers/pnbMapper.js';
 import { barodaRenderData } from '../utils/pdfMappers/barodaMapper.js';
+import { maharashtraRenderData } from '../utils/pdfMappers/maharashtraMapper.js';
+import { shivkrupaRenderData } from '../utils/pdfMappers/shivkrupaMapper.js';
 
 
 function parseIfJsonString(val) {
@@ -166,11 +168,16 @@ export const removeBranch = catchAsyncError(async (req, res, next) => {
   res.status(200).json({ success: true, data: bank });
 });
 
+// Helper to create a safe ASCII filename for HTTP headers
+function safeFilename(str) {
+  return (str || 'appraisal')
+    .replace(/[^a-zA-Z0-9_-]/g, '') // remove non-ASCII
+    .toLowerCase();
+}
 
 export const generateBankPdf = async (req, res) => {
   try {
     const data = req.body;
-    // console.log(data);
     const bankType = (data.bankType || data.selectedBank || '').toLowerCase();
     const appConfig = await getAppConfig();
     const bankDetails = await BankModel.findOne({ bankName: data.selectedBank });
@@ -207,6 +214,13 @@ export const generateBankPdf = async (req, res) => {
     } else if (bankType === 'bank of baroda' || bankType === 'baroda') {
       renderData = barodaRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields });
       templateFile = 'barodaTemplate.ejs';
+    } else if (bankType === 'bank of maharashtra' || bankType === 'maharashtra') {
+      renderData = maharashtraRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields });
+      templateFile = 'bankOfMaharastra.ejs';
+    } else if (bankType === 'shivkrupa' || bankType === 'shiv krupa' ||
+      bankType === 'शिवकृपा सहकारी पतपेढी लि., मुंबई,') {
+      renderData = shivkrupaRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields });
+      templateFile = 'shivkrupa.ejs';
     } else {
       return res.status(400).json({ success: false, message: "Unsupported bank type" });
     }
@@ -220,6 +234,19 @@ export const generateBankPdf = async (req, res) => {
         { async: true }
       );
     } else if (bankType === 'bank of baroda' || bankType === 'baroda') {
+      html = await ejs.renderFile(
+        path.join(process.cwd(), "views", templateFile),
+        { ...renderData },
+        { async: true }
+      );
+    } else if (bankType === 'bank of maharashtra' || bankType === 'maharashtra') {
+      html = await ejs.renderFile(
+        path.join(process.cwd(), "views", templateFile),
+        { ...renderData },
+        { async: true }
+      );
+    } else if (bankType === 'shivkrupa' || bankType === 'shiv krupa' ||
+      bankType === 'शिवकृपा सहकारी पतपेढी लि., मुंबई,') {
       html = await ejs.renderFile(
         path.join(process.cwd(), "views", templateFile),
         { ...renderData },
@@ -255,13 +282,27 @@ export const generateBankPdf = async (req, res) => {
     });
 
     // Send as PDF response
+    const filename = `${safeFilename(bankType)}_appraisal.pdf`;
     res.set({
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename=${bankType}_appraisal.pdf`
+      'Content-Disposition': `attachment; filename=${filename}`
     });
     res.end(pdfBuffer, 'binary');
   } catch (err) {
-    console.error("Bank PDF generation error:", err);
+    // Enhanced error logging
+    console.error("Bank PDF generation error:", err.message, err.stack);
+    if (typeof logger !== 'undefined' && logger.error) {
+      logger.error("Bank PDF generation error", {
+        errorMessage: err.message,
+        errorStack: err.stack,
+        requestBody: req.body,
+        user: req.user?.username,
+        url: req.originalUrl,
+        method: req.method,
+        ip: req.ip,
+        timestamp: new Date().toISOString()
+      });
+    }
     res.status(500).json({ success: false, message: "Internal server error", error: err.message });
   }
 };

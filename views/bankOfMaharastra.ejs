@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate by the Appraiser</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 8mm;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            margin: 0;
+            padding: 0;
+            line-height: 1.2;
+            width: 210mm;
+            min-height: 297mm;
+            box-sizing: border-box;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .header h1 {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
+            padding: 3px;
+            border: 1px solid black;
+            display: inline-block;
+        }
+        
+        .second-line {
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .date-line {
+            text-align: right;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        
+        .certificate-title {
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+        
+        .two-column-section {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            gap: 10px;
+        }
+        
+        .left-column {
+            width: 45%;
+        }
+        
+        .right-column {
+            width: 45%;
+        }
+        
+        .jeweller-details {
+            margin-bottom: 8px;
+        }
+        
+        .jeweller-details div {
+            margin: 2px 0;
+        }
+        
+        .form-section {
+            margin: 8px 0;
+        }
+        
+        .form-row {
+            display: flex;
+            margin: 4px 0;
+            align-items: center;
+        }
+        
+        .form-row label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .underline {
+            border-bottom: 1px solid black;
+            min-width: 100px;
+            display: inline-block;
+            margin: 0 3px;
+            padding: 1px;
+        }
+        
+        .table-section {
+            margin: 10px 0;
+        }
+        
+        .appraisal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        .appraisal-table th,
+        .appraisal-table td {
+            border: 1px solid black;
+            padding: 4px;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .appraisal-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        
+        .description-col {
+            width: 25%;
+            text-align: left;
+        }
+        
+        .signature-section {
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .signature-box {
+            border: 1px solid black;
+            padding: 5px;
+            width: 45%;
+        }
+        
+        .signature-box h3 {
+            margin: 0 0 5px 0;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        .signature-field {
+            display: flex;
+            margin: 2px 0;
+            align-items: center;
+        }
+        
+        .signature-field label {
+            font-weight: bold;
+            margin-right: 6px;
+            min-width: 60px;
+        }
+        
+        .checkbox-section {
+            margin: 10px 0;
+        }
+        
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            margin: 2px 0;
+        }
+        
+        .checkbox-row input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        .disclaimer {
+            font-size: 13px;
+            margin: 8px 0;
+            text-align: justify;
+            line-height: 1;
+        }
+        
+        .unclassified {
+            text-align: center;
+            font-style: italic;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Line 1: Centered logo -->
+    <div class="header" style="text-align: center; margin-bottom: 8px;">
+        <% if (bankLogoUrl) { %>
+            <img src="<%= bankLogoUrl %>" alt="Bank Logo" style="height: 35px; display: block; margin: 0 auto;" />
+        <% } %>
+    </div>
+    
+    <!-- Line 2: Right aligned -->
+    <div class="certificate-title">
+        CERTIFICATE BY THE APPRAISER
+    </div>
+    
+    
+    <!-- Line 3: Date on right side -->
+    <div class="date-line">
+        <strong>DATE:</strong> <b><%= appraisalDate %></b>
+    </div>
+    
+    <!-- Line 4: Two columns -->
+    <div class="two-column-section">
+        <div class="left-column">
+            <div><strong>From</strong></div>
+            <div class="jeweller-details">
+                <div><strong><%= jewellerName %></strong></div>
+                <div><%= jewellerPhone %></div>
+                <div>Address: <%= jewellerAddress %></div>
+                <div>Email: <%= jewellerEmail %></div>
+                <div>Account Number: <%= jewellerAccountNumber %></div>
+                <div>IOV Membership No: <%= iovMembershipNo %></div>
+            </div>
+        </div>
+        
+        <div class="right-column">
+            <div><strong>To</strong></div>
+            <div>Manager</div>
+            <div>Bank of Maharashtra</div>
+            <div><%= branchName %> Branch</div>
+        </div>
+    </div>
+    
+    <!-- Line 5: Borrower details -->
+    <div class="form-section">
+        <div class="form-row">
+            <label>Sr:</label>
+        </div>
+        <div class="form-row">
+            <label>Name of Borrower:</label>
+            <b><%= borrowerName %></b>
+            <span style="margin-left: 30px;"><label>CIF NO:</label></span>
+            <b><%= cifNumber %></b>
+            <span style="margin-left: 30px;"><label>Amount:</label></span>
+            <b><%= requestedAmount %></b>
+        </div>
+    </div>
+    
+   
+    <!-- Line 6: Request section -->
+    <div class="form-section">
+        <p>At the request of Shri/Smt <b><%= requestedBy %></b>, I have <strong><%= appraisalType %></strong> I following ornament/jewels, the details of which are given below</p>
+        
+        <div class="form-row" style="align-items: flex-start;">
+            <div style="width: 50%; display: flex;">
+                <span style="font-weight: bold; margin-right: 10px;">1.</span>
+                <div>
+                    <span style="font-weight: bold;">Name and address of the party to</span><br/>
+                    <span>whom the jewel/ornaments belong and</span><br/>
+                    <span>at whose request <%= appraisalType %> has been done</span>
+                </div>
+            </div>
+            <span style="font-weight: bold; margin-right: 10px;">:</span>
+            <div style="width: 50%;">
+                <% const partyLines = partyDetails.split(/\r?\n|(?<=\S)\s{2,}/); %>
+                <% partyLines.forEach(function(line, idx) { %>
+                    <span><%= line %></span><br/>
+                <% }); %>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <label>2. Details of jewels appraised:</label>
+        </div>
+    </div>
+    
+    <div class="table-section">
+        <table class="appraisal-table">
+            <thead>
+                <tr>
+                    <th>Description of the jewels/ ornaments assessed</th>
+                    <th>Gross weight</th>
+                    <th>Net Weight (excluding stones attached to jewels/ ornaments)</th>
+                    <th>Purity hall marks 22 carat</th>
+                    <th>Market value @ Rs...... per gram of gold</th>
+                    <th>Total Market value weight of gold</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% jewelryItems.forEach(function(item) { %>
+                <tr>
+                    <td class="description-col"><%= item.description %></td>
+                    <td><%= item.grossWeight %></td>
+                    <td><%= item.netWeightExcludingStones %></td>
+                    <td><%= item.purity %></td>
+                    <td><%= item.marketValue1 %></td>
+                    <td><%= item.marketValue2 %></td>
+                </tr>
+                <% }); %>
+                <tr>
+                    <td class="description-col"><b>Total</b></td>
+                    <td><b><%= totalGrossWeight %></b></td>
+                    <td><b><%= totalNetWeightExcludingStones %></b></td>
+                    <td></td>
+                    <td><b><%= totalMarketValue1 %></b></td>
+                    <td><b><%= totalMarketValue2 %></b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="disclaimer" style="line-height: 1;">
+        <p style="line-height: 1;">I hereby certify that the value of the above jewels is not less than the value mentioned above.</p>
+        <p style="line-height: 1;">I also certify that the fineness/purity weights and valuation rates given above are correct.</p>
+        <p style="line-height: 1;">Further, I declare that the applicant is/are not my relative/associate etc. and also do not have any interest whatsoever in the Gold ornaments/Jewelry that have been <strong><%= disclaimerAppraisalType %></strong> by me.</p>
+    </div>
+ 
+    <div style="font-size: 13px; margin: 2px 0 10px 0; line-height: 1;">
+        Charges for appraisal Rs: <strong><%= appraisalCharges %></strong>
+    </div>
+    
+    <!-- Signature and Jeweller Photo Section -->
+    <div class="form-section" style="margin-top: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="width: 48%; text-align: left;">
+                <% if (jewellerSignatureUrl) { %>
+                    <img src="<%= jewellerSignatureUrl %>" alt="Signature" style="height: 40px; margin-bottom: 2px; display: block;" />
+                <% } %>
+                <div style="font-size: 13px; font-weight: bold;">Signature of Appraiser</div>
+            </div>
+            <div style="width: 48%; text-align: center;">
+                <% if (jewellerPhotoUrl) { %>
+                    <img src="<%= jewellerPhotoUrl %>" alt="Jeweller Photo" style="height: 80px; margin-bottom: 2px; display: block; margin-left: auto; margin-right: auto;" />
+                <% } %>
+             
+            </div>
+        </div>
+    </div>
+
+    <div style="font-size: 13px; margin: 2px 0 10px 0; line-height: 1; text-align: center; font-weight: bold;">
+        <p>For office use only</p>
+    </div>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+        <tr>
+            <td style="border: 1px solid #000; padding: 6px; width: 50%; font-weight: bold;">
+                Gold Loan A/c No.
+                <b style="display: inline-block; min-width: 120px;"> <%= goldLoanAccountNo %> </b>
+            </td>
+            <td style="border: 1px solid #000; padding: 6px; width: 50%; font-weight: bold;">
+                CIF No.
+                <b style="display: inline-block; min-width: 120px;"> <%= cifNumber %> </b>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #000; padding: 6px; width: 50%; font-weight: bold;">
+                Amount:
+                <b style="display: inline-block; min-width: 120px;"> <%= sanctionedAmount %> </b>
+            </td>
+            <td style="border: 1px solid #000; padding: 6px; width: 50%; font-weight: bold;">
+                Date:
+                <b style="display: inline-block; min-width: 120px;"> <%= officeDate %> </b>
+            </td>
+        </tr>
+    </table>
+    
+    <div class="checkbox-section" style="margin-top: 10px;">
+        <div class="checkbox-row">
+            <div style="width: 50%; text-align: left;">Status :</div>
+            <div style="width: 50%; text-align: left;">
+                <% if (status) { %>
+                    <b>Sanctioned</b>
+                <% } else { %>
+                    <b>Rejected</b>
+                <% } %>
+            </div>
+        </div>
+        <div class="checkbox-row">
+            <div style="width: 50%; text-align: left;">Gross Weight of Jewel :</div>
+            <div style="width: 50%; text-align: left;"><b><%= totalGrossWeight %> gms </b></div>
+        </div>
+        <div class="checkbox-row">
+            <div style="width: 50%; text-align: left;">Net weight of Jewel eligible for finance :</div>
+            <div style="width: 50%; text-align: left;"><b><%= eligibleNetWeight %> gms</b></div>
+        </div>
+        <div class="checkbox-row">
+            <div style="width: 50%; text-align: left;">Amount of Loan/Cash Credit Limit sanctioned :</div>
+            <div style="width: 50%; text-align: left;"><b><%= sanctionedAmount %></b></div>
+        </div>
+        <div class="checkbox-row">
+            <div style="width: 50%; text-align: left;">Date of sanction :</div>
+            <div style="width: 50%; text-align: left;"><b><%= sanctionDate %></b></div>
+        </div>
+        <div class="checkbox-row">
+            <div style="width: 50%; text-align: left;">Tenure of loan :</div>
+            <div style="width: 50%; text-align: left;"><b><%= loanTenure %></b></div>
+        </div>
+    </div>
+    
+</body>
+</html>

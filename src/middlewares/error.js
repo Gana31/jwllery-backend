@@ -1,4 +1,5 @@
 import ErrorHandler from "../utils/errorHandler.js";
+import { logError } from "../utils/logger.js";
 
 export default (err, req, res, next) => {
   err.message = err.message || "Internal Server Error";
@@ -25,6 +26,16 @@ export default (err, req, res, next) => {
     const message = `Json Web Token is expired, try again`;
     err = new ErrorHandler(message, 400);
   }
+
+  // Log the error with message and stack
+  logError(err, {
+    method: req.method,
+    url: req.url,
+    statusCode: err.statusCode || 500,
+    userId: req.user?.id || null,
+    ip: req.ip,
+    userAgent: req.get('User-Agent'),
+  });
 
   res.status(err.statusCode || 500).json({
     success: false,

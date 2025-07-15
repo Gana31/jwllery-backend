@@ -226,3 +226,165 @@ export const renderBarodaTemplateTest = (req, res) => {
   };
   res.render('barodaTemplate', data);
 }; 
+
+export const renderBankOfMaharastraTest = (req, res) => {
+  const now = new Date();
+  const appraisalType = 'Appraised'; // or 'Reappraised' for testing
+  // Only appraisalType comes from frontend, so set disclaimerAppraisalType based on that
+  const disclaimerAppraisalType = appraisalType === 'Reappraised' ? 'reassessed/reappraised' : 'assessed/appraised';
+  const data = {
+    companyName: company.companyName,
+    secondLineText: 'Gold Loan Appraisal Report',
+    appraisalDate: now.toLocaleDateString('en-GB'),
+    jewellerName: company.companyName,
+    jewellerPhone: company.companyPhone,
+    jewellerAddress: company.companyAddress,
+    jewellerEmail: company.companyEmail,
+    jewellerAccountNumber: 'GL123456789',
+    iovMembershipNo: company.membershipNo,
+    branchName: 'Pune Main',
+    borrowerName: 'Rahul Sharma',
+    cifNumber: 'CIF67890',
+    requestedAmount: '9000',
+    appraisalType,
+    partyDetails: 'Rahul Sharma, 123, MG Road, Pune, for Gold Loan ' ,
+    jewelryItems: [
+      {
+        description: 'Gold Ring',
+        grossWeight: '10.5',
+        netWeightExcludingStones: '10.0',
+        purity: '22K',
+        marketValue1: '50000',
+        marketValue2: '51000',
+      },
+      {
+        description: 'Gold Chain',
+        grossWeight: '20.0',
+        netWeightExcludingStones: '19.5',
+        purity: '22K',
+        marketValue1: '97500',
+        marketValue2: '98000',
+      },
+    ],
+    appraiserSignature: 'Amit Valuer',
+    goldLoanAccountNo: 'GL123456789',
+    officeCifNo: 'CIFOFF123',
+    status: {
+      sanctioned: true,
+      rejected: false,
+      sanctionedAmount: '95000',
+    },
+    totalGrossWeight: '30.5',
+    eligibleNetWeight: '29.5',
+    sanctionedAmount: '95000',
+    sanctionDate: now.toLocaleDateString('en-GB'),
+    loanTenure: '12 months',
+    disclaimerAppraisalType,
+    appraisalCharges: '500',
+    jewellerSignatureUrl: getFullUrl(company.signature),
+    officeDate: now.toLocaleDateString('en-GB'),
+    bankLogoUrl: 'https://ganeshtest2.s3.ap-south-1.amazonaws.com/385-3856570_sbi-logo-%5Bstate-bank-of-india-group%5D-vector-eps-free-sbi-logo+(1).png',
+    requestedBy: 'Rahul Sharma', // Always matches borrowerName
+    jewellerPhotoUrl: getFullUrl(company.companyLogo),
+  };
+  // Calculate totals for the table
+  const totalGrossWeight = data.jewelryItems.reduce((sum, item) => sum + parseFloat(item.grossWeight), 0).toFixed(2);
+  const totalNetWeightExcludingStones = data.jewelryItems.reduce((sum, item) => sum + parseFloat(item.netWeightExcludingStones), 0).toFixed(2);
+  const totalMarketValue1 = data.jewelryItems.reduce((sum, item) => sum + parseFloat(item.marketValue1), 0).toFixed(2);
+  const totalMarketValue2 = data.jewelryItems.reduce((sum, item) => sum + parseFloat(item.marketValue2), 0).toFixed(2);
+  data.totalGrossWeight = totalGrossWeight;
+  data.totalNetWeightExcludingStones = totalNetWeightExcludingStones;
+  data.totalMarketValue1 = totalMarketValue1;
+  data.totalMarketValue2 = totalMarketValue2;
+  res.render(path.join(process.cwd(), 'views', 'bankOfMaharastra.ejs'), data);
+}; 
+
+export const renderShivkrupaTest = (req, res) => {
+  const dummyData = {
+    companyName: "शिवकृपा सहकारी पतपेढी लि., मुंबई",
+    certificateNumber: "001/2024",
+    appraisalDate: "15/07/2024",
+    managerName: "श्री. राजेश शर्मा",
+    branchName: "पुणे मुख्य",
+    evaluationDate: "15/07/2024",
+    evaluatorDate: "15/07/2024",
+    customerName: "श्रीमती सुनिता पाटील",
+    customerAddress: "सदाशिव पेठ, पुणे",
+    accountNumber: "1234567890",
+    pouchNumber: "PCH001",
+    additionalInfo: "सोने तारण कर्ज योजना",
+    finalDate: "15/07/2024",
+    place: "पुणे",
+    jewellerLogo: "https://dummyimage.com/80x40/cccccc/000.png&text=Logo",
+    jewellerName: "Shreenath Jewellers",
+    jewellerAddress: "Near Marathi School, Manik chouk, Chakan, Pune, 410501",
+    jewellerPhone: "(020)2728 0188",
+    jewellerEmail: "anandsangvi@gmail.com",
+    jewellerMembershipNo: "A641-5882-02",
+    apprenticeType: "मूल्यांकन", // or 'पुनर्मूल्यांकन' for reappraisal
+    jewellerPhoto: "https://ganeshtest2.s3.ap-south-1.amazonaws.com/banklogos/bankofmaharashtra/780fd568-672b-4881-9e0f-f284f0e0a977.png",
+    jewellerSignature: "https://ganeshtest2.s3.ap-south-1.amazonaws.com/appimages/bb5d7411-9750-4952-a892-0af595186fbd.png",
+    items: [
+      {
+        description: "सोन्याची साखळी (22 कॅरेट)",
+        count: 1,
+        totalWeight: "45.50",
+        pureWeight: "42.30",
+        marketRate: "₹5,600",
+        estimatedValue: "₹2,53,800",
+        sanctionedValue: "₹2,00,000"
+      },
+      {
+        description: "सोन्याचे कानातले (22 कॅरेट)",
+        count: 2,
+        totalWeight: "12.25",
+        pureWeight: "11.50",
+        marketRate: "₹6,000",
+        estimatedValue: "₹69,000",
+        sanctionedValue: "₹55,000"
+      },
+      {
+        description: "सोन्याचे बांगडे (जोडी)",
+        count: 2,
+        totalWeight: "28.75",
+        pureWeight: "26.80",
+        marketRate: "₹5,900",
+        estimatedValue: "₹1,60,800",
+        sanctionedValue: "₹1,30,000"
+      },
+      {
+        description: "सोन्याची अंगठी (18 कॅरेट)",
+        count: 1,
+        totalWeight: "8.50",
+        pureWeight: "6.40",
+        marketRate: "₹5,500",
+        estimatedValue: "₹35,200",
+        sanctionedValue: "₹28,000"
+      },
+      {
+        description: "सोन्याचा हार (22 कॅरेट)",
+        count: 1,
+        totalWeight: "65.30",
+        pureWeight: "62.15",
+        marketRate: "₹6,000",
+        estimatedValue: "₹3,72,900",
+        sanctionedValue: "₹3,00,000"
+      }
+    ]
+  };
+
+  // Calculate totals in the controller
+  const totalCount = dummyData.items.reduce((sum, item) => sum + (Number(item.count) || 0), 0);
+  const totalWeight = dummyData.items.reduce((sum, item) => sum + (Number(item.totalWeight) || 0), 0);
+  const totalPureWeight = dummyData.items.reduce((sum, item) => sum + (Number(item.pureWeight) || 0), 0);
+  const totalEstimated = dummyData.items.reduce((sum, item) => sum + (Number((item.estimatedValue||'').replace(/[^\d.]/g, '')) || 0), 0);
+  const totalSanctioned = dummyData.items.reduce((sum, item) => sum + (Number((item.sanctionedValue||'').replace(/[^\d.]/g, '')) || 0), 0);
+
+  dummyData.totalCount = totalCount;
+  dummyData.totalWeight = totalWeight;
+  dummyData.totalPureWeight = totalPureWeight;
+  dummyData.totalEstimated = totalEstimated;
+  dummyData.totalSanctioned = totalSanctioned;
+
+  res.render(path.join(process.cwd(), 'views', 'shivkrupa.ejs'), dummyData);
+}; 

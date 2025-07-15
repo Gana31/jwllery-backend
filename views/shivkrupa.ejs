@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>शिवकृपा सहकारी पतपेढी लि., मुंबई</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        
+        body {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            font-size: 13px;
+            margin: 0;
+            padding: 0;
+            line-height: 1.3;
+            width: 210mm;
+            min-height: 297mm;
+            box-sizing: border-box;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .header h2 {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        
+        .form-section {
+            margin: 15px 0;
+        }
+        
+        .form-row {
+            display: flex;
+            margin: 8px 0;
+            align-items: center;
+        }
+        
+        .form-row label {
+            margin-right: 10px;
+        }
+        
+        .underline {
+            border-bottom: 1px solid black;
+            min-width: 100px;
+            display: inline-block;
+            margin: 0 5px;
+            padding: 2px;
+        }
+        
+        .dotted-line {
+            border-bottom: 1px dotted black;
+            min-width: 100px;
+            display: inline-block;
+            margin: 0 5px;
+            padding: 2px;
+        }
+        
+        .right-align {
+            text-align: right !important;
+        }
+        
+        .table-section {
+            margin: 20px 0;
+        }
+        
+        .appraisal-table {
+            width: 98%;
+            margin: 10px auto;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        
+        .appraisal-table th,
+        .appraisal-table td {
+            border: 1px solid black;
+            padding: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .appraisal-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        
+        .description-col {
+            width: 20%;
+            text-align: left;
+        }
+        
+        .narrow-col {
+            width: 8%;
+        }
+        
+        .medium-col {
+            width: 12%;
+        }
+        
+        .signature-section {
+            margin: 30px 0;
+        }
+        
+        .signature-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        
+        .signature-item {
+            text-align: center;
+            width: 30%;
+        }
+        
+        .centered-text {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .justified-text {
+            text-align: justify;
+            margin: 10px 0;
+        }
+        
+        .space-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-section {
+            margin-top: 30px;
+            font-size: 11px;
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>शिवकृपा सहकारी पतपेढी लि., मुंबई,</h1>
+        <h2>-  मुल्यांकन दाखला -</h2>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+        <div style="width: 48%;">
+            <div><strong>पावती क्र.: <%= certificateNumber %></strong></div>
+            <div><strong>दिनांक: <%= appraisalDate %></strong></div>
+            <div><strong>मा. शाखाधिकारी</strong></div>
+            <div><strong> <%= branchName %> ,शाखा</strong></div>
+        </div>
+        <div style="width: 48%; text-align: right;">
+            <% if (jewellerLogo) { %>
+                <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-bottom: 5px;">
+                    <img src="<%= jewellerLogo %>" alt="Logo" style="height: 30px;">
+                    <strong style="font-size: 1.1em;"><%= jewellerName %></strong>
+                </div>
+            <% } else { %>
+                <div><strong><%= jewellerName %></strong></div>
+            <% } %>
+            <div><%= jewellerAddress %></div>
+            <div>फोन: <%= jewellerPhone %></div>
+            <div>ईमेल: <%= jewellerEmail %></div>
+            <div>IOV सदस्यता क्र.: <%= jewellerMembershipNo %></div>
+        </div>
+    </div>
+    
+    <div class="form-section">
+        <div class="form-row">
+            <span>महोदय,</span>
+        </div>
+        <div class="form-row">
+            <span >
+                <span style="font-weight: bold;">
+                श्री. <%= customerName %>,
+                पत्ता: <%= customerAddress %>,
+                खाते क्रमांक: <%= accountNumber %>,
+                पाउच क्रमांक: <%= pouchNumber %>
+            </span>
+                यांनी सोने / चांदी दागिन्यांच्या तारणावर कर्ज मिळण्यासाठी आपल्याकडे अर्ज केला आहे. त्या कर्जापोटी तारण ठेवू इच्छित असलेल्या दागिन्यांच्या चोखपणा व मूल्याबाबत दाखला देतो की, खाली वर्णन केलेले दागिने मी स्वतः तपासलेले असून वजन केले आहेत. त्याचा अहवाल पुढील प्रमाणे आहे.
+            </span>
+        </div>
+    </div>
+    
+    <div class="table-section">
+        <table class="appraisal-table">
+            <thead>
+                <tr>
+                    <th>अ. क्र.</th>
+                    <th>दागिन्यांचा तपशील</th>
+                    <th>नग संख्या</th>
+                    <th>एकूण वजन</th>
+                    <th>चोख वजन</th>
+                    <th>बाजार भाव (प्रति ग्रॅम) - सोनं व चांदी</th>
+                    <th>बाजार भावाप्रमाणे होणारी किंमत</th>
+                    <th>संस्थेच्या तारणासाठी ठरविण्यात येणारी एकूण रक्कम</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(function(item, index) { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= item.description %></td>
+                    <td class="right-align"><%= item.units %></td>
+                    <td class="right-align"><%= item.grossWeight %></td>
+                    <td class="right-align"><%= item.netWeight %></td>
+                    <td class="right-align"><%= item.goldRate %></td>
+                    <td class="right-align"><%= item.approxValue %></td>
+                    <td class="right-align"><%= item.finalLoanValue %></td>
+                </tr>
+                <% }); %>
+                <tr>
+                    <td></td>
+                    <td><strong>एकूण</strong></td>
+                    <td class="right-align"><strong><%= totalUnits %></strong></td>
+                    <td class="right-align"><strong><%= totalGrossWeight %></strong></td>
+                    <td class="right-align"><strong><%= totalNetWeight %></strong></td>
+                    <td></td>
+                    <td class="right-align"><strong>₹<%= totalApproxValue %></strong></td>
+                    <td class="right-align"><strong>₹<%= totalFinalLoanValue %></strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+<div style="display: flex; margin-top: 20px;">
+    <div style="width: 80%; text-align: justify; padding-right: 20px;">
+        <span>
+            सदर दागिन्यांचे <span style="font-weight: bold;"> <%= apprenticeType %> </span> करताना, त्यांच्या चोखपणाबद्दल मी स्वतः कस लावून खात्री केली आहे. 
+            तसेच या दागिन्यांचे वजन व आजच्या बाजारभावानुसार झालेली एकूण किंमत मी प्रमाणित केली आहे. 
+            त्यानुसार सदर दागिने कर्जदाराकडून सोडविले न गेल्यास त्या वेळच्या बाजारभावाने खरेदी करण्याची माझी तयारी आहे. 
+            सदर जिन्नस कापडी पिशवीत माझ्या समक्ष Seal करून संस्थेच्याताब्यात देत आहे. / आहोत.
+        </span>
+    </div>
+    <div style="width: 20%; text-align: center;">
+        <% if (jewellerPhoto) { %>
+            <img src="<%= jewellerPhoto %>" alt="Jeweller Photo" style="width: 100%; max-height: 80px;">
+        <% } %>
+    </div>
+</div>
+
+<div style="display: flex; margin-top: 10px;">
+    <div style="width: 80%; font-weight: bold; display: flex; align-items: center; justify-content: start;">
+        सराफाचे नांव: <%= jewellerName %>
+    </div>
+    <div style="width: 20%; text-align: center;">
+       
+        <% if (jewellerSignature) { %>
+            <img src="<%= jewellerSignature %>" alt="Signature" style="width: 120px; max-height: 70px; margin-top: 4px;">
+        <% } %>
+        <div style="font-weight: bold;">सही व शिक्का</div>
+    </div>
+</div>
+<div style="margin-top: 8px;">
+    <hr style="border: 1.5px solid #000; margin: 0;">
+</div>
+
+    
+    <div class="centered-text">
+        <strong>-: मुल्यांकनाबाबत सहमती :- </strong>
+    </div>
+    
+    <div style="display: flex; margin-top: 18px; align-items: flex-start;">
+        <div style="width: 80%; font-size: 13px;">
+            वरीलप्रमाणे दागिन्यांचे सराफाने केलेले वजन व किंमत बरोबर असून ते मला मान्य आहे.
+        </div>
+        <div style="width: 20%; text-align: center; padding-top: 30px;">
+            <div style="font-weight: bold;">अर्जदाराची सही</div>
+        </div>
+    </div>
+
+    <div style="margin-top: 8px;">
+        <hr style="border: 1.5px solid #000; margin: 0;">
+    </div>
+     
+    <div class="centered-text">
+        <strong>-: सोने / चांदीच्या दागिन्यांची पोचपावती :-</strong>
+    </div>
+    
+    <div class="justified-text">
+        <p>श्री/श्रीमती <span class="dotted-line" style="font-weight: bold;"><%= customerName %></span> यांनी कर्जाचे तारणापोटी दिलेले
+            उपर्निदिष्ट दागिने ताब्यात घेऊन त्यांना त्याचपोटी  <span style="font-weight: bold;"><%= totalFinalLoanValue %></span> कर्ज अदा करण्यात आले आहे. कर्जाची पूर्ण परतफेड
+            केल्यानंतर ही पोचपावती शाखेमध्ये सादर केल्यानंतर सदर दागिने परत केले जातील.</p>
+    </div>
+    
+    <div class="form-section">
+        <div class="form-row">
+            <span style="font-weight: bold;">दिनांक : <%= finalDate %></span>
+            <span style="margin-left: 200px; font-weight: bold; margin-top: 10px;"><span class="dotted-line" style="font-weight: bold;"></span>कर्जदाराची सही </span>
+            <span style="margin-left: 200px; font-weight: bold; margin-top: 10px;"><span class="dotted-line" style="font-weight: bold;"></span>शाखाधिकाऱ्यांची सही</span>
+        </div>
+    </div>
+
+    <div style="margin-top: 8px;">
+        <hr style="border: 1.5px solid #000; margin: 0;">
+    </div>
+    
+    <div class="centered-text">
+        <strong>-: कर्जदाराकडून पोचपावती :-</strong>
+    </div>
+    
+    <div class="justified-text">
+        <p>माझे सोन्याचे / चांदीचे सर्व दागिने ज्या वजनाचे होते व ज्या स्थितीत होते त्या स्थितीत मला परत मिळाले.त्याबद्दल माझी कोणत्याही
+            प्रकारची तक्रार नाही.</p>
+    </div>
+    
+    <div class="signature-section">
+        <div class="signature-row">
+            <div class="signature-item">
+                <span class="dotted-line"></span><br>
+                <span style="font-weight: bold;">अधिकारी सही</span>
+            </div>
+            <div class="signature-item">
+                <span class="dotted-line"></span><br>
+                <span style="font-weight: bold;">साक्षीदाराची सही</span>
+            </div>
+            <div class="signature-item">
+                <span class="dotted-line"></span><br>
+                <span style="font-weight: bold;">कर्जदाराची सही</span>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 8px;">
+        <hr style="border: 1.5px solid #000; margin: 0;">
+    </div>
+    
+    <div class="footer-section">
+        <p><span style="font-weight: bold;">कर्जदारासाठी सुचना:</span> कर्ज पूर्ण परतफेड केल्यानंतर सदर पावती दाखविल्याशिवाय दागिने परत दिले जाणार नाहीत.
+            दागिने परत घेऊन जाण्यासाठी तीन दिवस अगोदर कार्यालयात पूर्व सूचना द्यावी.</p>
+    </div>
+</body>
+</html>

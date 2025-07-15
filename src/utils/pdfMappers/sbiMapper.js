@@ -65,8 +65,10 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     jewelryImage = `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${jewelleryImagePath.replace(/^\//, '')}`;
   }
   let bankManagerName = '';
+  let appraisalCharges = '';
   if (bankFields && typeof bankFields === 'object') {
     bankManagerName = bankFields.bankManagerName || '';
+    appraisalCharges = bankFields.appraisalCharges || '';
   }
   // Signature URL
   const signatureUrl = appConfig?.signature ? `${appConfig.s3BaseUrl?.replace(/\/$/, '')}/${appConfig.signature.replace(/^\//, '')}` : '';
@@ -105,6 +107,7 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     totalValue: formatIndianCurrency(totalApproxValue),
     valuations,
     bankManagerName,
+    appraisalCharges,
     signatureUrl,
   };
 } 
