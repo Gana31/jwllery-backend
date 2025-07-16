@@ -19,6 +19,7 @@ jobs:
             --exclude='.github' \
             --exclude='node_modules' \
             --exclude='.DS_Store' \
+            --exclude='.env' \
             $GITHUB_WORKSPACE/ /home/ubuntu/jwllery-backend/
 
       - name: Copy .env if needed
