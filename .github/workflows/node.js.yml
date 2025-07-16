@@ -1,13 +1,12 @@
 name: Node.js CI + Auto Deploy to EC2
 
-
 on:
   push:
     branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: self-hosted  # GitHub self-hosted runner on your EC2 instance
+    runs-on: self-hosted  # Your GitHub Actions runner on EC2
 
     steps:
       - name: Checkout code
@@ -26,10 +25,33 @@ jobs:
         run: |
           cp /home/ubuntu/envs/jwllery-backend.env /home/ubuntu/jwllery-backend/.env || echo ".env file not found, skipping..."
 
-      - name: Install dependencies
+      - name: Check if dependencies changed
+        id: deps
         run: |
           cd /home/ubuntu/jwllery-backend
-          npm ci --omit=dev
+
+          if [ -f .package-lock.hash ]; then
+            PREV_HASH=$(cat .package-lock.hash)
+          else
+            PREV_HASH=""
+          fi
+
+          CURR_HASH=$(sha256sum package-lock.json | awk '{ print $1 }')
+          echo "Previous hash: $PREV_HASH"
+          echo "Current  hash: $CURR_HASH"
+
+          if [ "$PREV_HASH" != "$CURR_HASH" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo $CURR_HASH > .package-lock.hash
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies if changed
+        if: steps.deps.outputs.changed == 'true'
+        run: |
+          cd /home/ubuntu/jwllery-backend
+          npm install --omit=dev
 
       - name: Build project (if applicable)
         run: |
