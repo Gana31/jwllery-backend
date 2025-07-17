@@ -17,7 +17,7 @@ const formatPhoneNumbers = (phone, mobile) => {
 export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, bankFields, ornaments, reqUser }) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
-  console.log(selectedValuation);
+ 
   // Indian currency formatter
   const formatIndianCurrency = (value) => {
     const num = parseFloat(value) || 0;
@@ -77,7 +77,7 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
   
   // Format phone numbers conditionally
   const formattedPhoneNumbers = formatPhoneNumbers(appConfig?.companyPhone, appConfig?.companyMobile);
-  
+  console.log(appConfig);
   return {
     bankName: data.selectedBank,
     branchName: data.selectedBranch,
