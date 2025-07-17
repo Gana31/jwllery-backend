@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { getS3BaseUrl } from '../config/s3BaseUrlCache.js';
+import moment from 'moment';
 
 const AppConfigSchema = new mongoose.Schema(
   {
@@ -60,6 +61,18 @@ const AppConfigSchema = new mongoose.Schema(
       required: false,
       default: "",
     },
+    fatherName: {
+      type: String,
+      default: "",
+    },
+    fatherDateOfBirth: {
+      type: Date,
+      default: null,
+    },
+    ownerName: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
@@ -78,6 +91,16 @@ AppConfigSchema.statics.ensureDefault = async function () {
   }
 };
 
+// Add virtual for fatherAge
+AppConfigSchema.virtual('fatherAge').get(function() {
+  if (this.fatherDateOfBirth) {
+    const now = moment();
+    const dob = moment(this.fatherDateOfBirth);
+    return now.diff(dob, 'years');
+  }
+  return null;
+});
+
 // Custom transform function to replace relative paths with full S3 URLs
 function docTransform(doc, ret) {
   const baseS3Url = getS3BaseUrl();
@@ -87,6 +110,14 @@ function docTransform(doc, ret) {
       ret[field] = `${baseS3Url}/${ret[field]}`;
     }
   });
+  // Format fatherDateOfBirth as DD/MM/YYYY
+  if (ret.fatherDateOfBirth) {
+    ret.fatherDateOfBirth = moment(ret.fatherDateOfBirth).format('DD/MM/YYYY');
+  }
+  // Add fatherAge to output
+  if (doc.fatherAge !== undefined) {
+    ret.fatherAge = doc.fatherAge;
+  }
   return ret;
 }
 

@@ -4,7 +4,8 @@ const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   const type = file.mimetype.split("/")[0];
-  if (type === "image" || file.mimetype === "application/pdf") {
+
+  if (type === "image" || file.mimetype === "application/pdf" || file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/jpg") {
     cb(null, true);
   } else {
     cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);

@@ -37,6 +37,8 @@ export function maharashtraRenderData({ data, appConfig, bankDetails, jewelleryI
   const branchName = data.selectedBranch || '';
   const borrowerName = customerDetails?.customerName || '';
   const cifNumber = customerDetails?.cifNumber || '';
+  const phone = customerDetails?.phone || '';
+  const pouchNo = customerDetails?.pouchNo || '';
   const loanAmount = data.loanAmount || '';
   const requestedBy = customerDetails?.customerName || '';
   let appraisalType = 'Appraised';
@@ -123,6 +125,8 @@ export function maharashtraRenderData({ data, appConfig, bankDetails, jewelleryI
     requestedBy,
     appraisalType,
     partyDetails : customerDetails.address || '',
+    phone,
+    pouchNo,
     appraiserSignature,
     goldLoanAccountNo,
     officeCifNo,

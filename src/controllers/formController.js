@@ -87,19 +87,41 @@ export const getAllPdfs = catchAsyncError(async (req, res, next) => {
     
     // Transform data for frontend
     const transformedPdfs = pdfs.map(pdf => {
-      // Extract customer name with better fallback logic
-      let customerName = 'N/A';
-      if (pdf.formData?.customerDetails?.customerName) {
-        customerName = pdf.formData.customerDetails.customerName;
-      } else if (pdf.formData?.customerName) {
-        customerName = pdf.formData.customerName;
-      } else if (pdf.formData?.customer?.name) {
-        customerName = pdf.formData.customer.name;
-      } else if (pdf.formData?.customer?.customerName) {
-        customerName = pdf.formData.customer.customerName;
+      // Parse customerDetails if it's a string
+      let customerDetails = pdf.formData.customerDetails;
+      if (typeof customerDetails === 'string') {
+        try {
+          customerDetails = JSON.parse(customerDetails);
+        } catch (e) {
+          customerDetails = {};
+        }
       }
 
-      // Build full PDF URL
+      // Extract customer name with robust fallback logic
+      let customerName = 'N/A';
+      if (
+        customerDetails &&
+        typeof customerDetails.customerName === 'string' &&
+        customerDetails.customerName.trim() !== ''
+      ) {
+        customerName = customerDetails.customerName.trim();
+      } else if (
+        typeof pdf.formData.customerName === 'string' &&
+        pdf.formData.customerName.trim() !== ''
+      ) {
+        customerName = pdf.formData.customerName.trim();
+      } else if (
+        typeof pdf.formData.customer?.name === 'string' &&
+        pdf.formData.customer.name.trim() !== ''
+      ) {
+        customerName = pdf.formData.customer.name.trim();
+      } else if (
+        typeof pdf.formData.customer?.customerName === 'string' &&
+        pdf.formData.customer.customerName.trim() !== ''
+      ) {
+        customerName = pdf.formData.customer.customerName.trim();
+      }
+
       let pdfUrl = null;
       if (pdf.pdfPath) {
         if (s3BaseUrl && !pdf.pdfPath.startsWith('http')) {

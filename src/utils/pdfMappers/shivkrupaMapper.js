@@ -67,6 +67,7 @@ function shivkrupaRenderData({ data = {}, appConfig = {}, bankDetails = {}, jewe
     customerAddress: customerDetails?.address || get(data, 'customerAddress'),
     accountNumber: customerDetails?.accountNumber || get(data, 'accountNumber'),
     pouchNumber: customerDetails?.pouchNumber || get(data, 'pouchNumber'),
+    phone: customerDetails?.phone || get(data, 'phone'),
     additionalInfo: get(data, 'additionalInfo'),
     finalDate: get(data, 'finalDate') || new Date().toLocaleDateString('en-IN'),
     place: get(data, 'place'),

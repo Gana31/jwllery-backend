@@ -21,6 +21,9 @@ const startServer = async () => {
       }
     });
 
+    // Attach io to app for access in controllers
+    app.set('io', io);
+
     io.on('connection', (socket) => {
 
 

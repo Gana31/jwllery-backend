@@ -1,4 +1,4 @@
-import BankModel from "../models/BankModel.js";
+
 import { deleteFileFromS3, uploadBankLogoToS3 } from "../utils/s3.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncError from "../utils/catchAsyncError.js";
@@ -14,6 +14,7 @@ import { pnbRenderData } from '../utils/pdfMappers/pnbMapper.js';
 import { barodaRenderData } from '../utils/pdfMappers/barodaMapper.js';
 import { maharashtraRenderData } from '../utils/pdfMappers/maharashtraMapper.js';
 import { shivkrupaRenderData } from '../utils/pdfMappers/shivkrupaMapper.js';
+import BankModel from "../models/BankModel.js";
 
 
 function parseIfJsonString(val) {
@@ -71,7 +72,7 @@ export const createBank = catchAsyncError(async (req, res, next) => {
 
 // Get all banks with branches
 export const getAllBanks = catchAsyncError(async (req, res, next) => {
-  const banks = await BankModel.find();
+  const banks = await BankModel.find({});
   res.status(200).json({ success: true, data: banks });
 });
 
@@ -130,8 +131,6 @@ export const updateBank = catchAsyncError(async (req, res, next) => {
   }
   if (typeof req.body.bankFields !== 'undefined') {
     updateData.bankFields = parseIfJsonString(req.body.bankFields);
-  } else {
-    updateData.bankFields = [];
   }
 
   // Update bank

@@ -17,7 +17,7 @@ const formatPhoneNumbers = (phone, mobile) => {
 export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, bankFields, ornaments, reqUser }) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
-  
+  console.log(selectedValuation);
   // Indian currency formatter
   const formatIndianCurrency = (value) => {
     const num = parseFloat(value) || 0;
@@ -117,7 +117,8 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
     bankCardRate: formatToTwoDecimals(commonRatePerGram),
     apprenticeType: data.apprenticeType,
     bankCardValue: formatIndianCurrency(totalValue),
-    eligibleAmount: formatIndianCurrency(totalValue),
+    valuation: selectedValuation[0],
+    eligibleAmount: formatIndianCurrency(selectedValuation && selectedValuation.length > 0 ? (totalValue * selectedValuation[0] / 100) : totalValue),
     loanRequested: formatIndianCurrency(bankFields.loanRequestedByBorrower),
     lessMargin: formatIndianCurrency(bankFields.lessMargin35),
     minimumOfAboveTwo: formatIndianCurrency(bankFields.minimumOfAboveTwo),

@@ -22,10 +22,12 @@ export const getAppConfig = catchAsyncError(async (req, res, next) => {
 export const updateAppConfig = catchAsyncError(async (req, res, next) => {
   try {
     let updateData = { ...req.body };
+    // console.log(req.files);
 
     // Handle splashScreenLogo upload
     if (req.files && req.files.splashScreenLogo && req.files.splashScreenLogo[0]) {
       const uploadResult = await uploadAppImageToS3(req.files.splashScreenLogo[0]);
+      // console.log(uploadResult);
       updateData.splashScreenLogo = uploadResult.path;
     }
     // Handle companyLogo upload
@@ -50,6 +52,11 @@ export const updateAppConfig = catchAsyncError(async (req, res, next) => {
     // Update the S3 base URL cache if changed
     if (updatedConfig.s3BaseUrl) {
       setS3BaseUrl(updatedConfig.s3BaseUrl);
+    }
+
+    // Emit configUpdated event to all connected clients
+    if (req.app.get('io')) {
+      req.app.get('io').emit('configUpdated', { updatedAt: updatedConfig.updatedAt });
     }
 
     res.status(200).json({

@@ -8,7 +8,6 @@ import appconfigRouter from './src/routes/appconfigRoutes.js'
 import bankRouter from './src/routes/bankRoutes.js'
 import formRouter from './src/routes/formRoutes.js'
 import userRoutes from './src/routes/userRoutes.js';
-import logDashboard from './src/routes/logDashboard.js';
 import  { logRequest, logError } from './src/utils/logger.js';
 
 dotenv.config();

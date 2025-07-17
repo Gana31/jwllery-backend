@@ -4,7 +4,6 @@ import UserModel from '../models/userModel.js';
 
 export async function auth(req, res, next) {
   let token = req.header('Authorization');
-  console.log(token);
   // Remove 'Bearer ' prefix if present
   if (token && token.startsWith('Bearer ')) {
     token = token.split(' ')[1];
@@ -27,30 +26,12 @@ export async function auth(req, res, next) {
       return next(new ErrorHandler('User not found', 404));
     }
 
-    // Check if the token is expired (based on user's token.expiresAt field)
-    if (
-      user.token &&
-      user.token.expiresAt &&
-      user.token.expiresAt < new Date()
-    ) {
-      // Token expired -> remove from user and save
-      user.token = undefined;
-      await user.save();
-
-       return next(new ErrorHandler('Token expired. Please login again.', 401, 'TOKEN_EXPIRED'));
-    }
-
-    // Check if the token matches the user’s stored token
-    if (!user.token || user.token.value !== token) {
-      return next(new ErrorHandler('Token is invalid or not found.', 401, 'INVALID_TOKEN'));
-    }
-
-    // All good! Attach user to req
+    // No DB token checks needed for stateless JWT
     req.user = user;
     next();
   } catch (error) {
     console.log(error);
-     return next(new ErrorHandler('Invalid token', 401, 'INVALID_JWT'));
+    return next(new ErrorHandler('Invalid or expired token', 401, 'INVALID_JWT'));
   }
 }
 

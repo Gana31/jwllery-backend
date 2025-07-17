@@ -73,13 +73,8 @@ export const UserLogin = catchAsyncError(async (req, res, next) => {
       expiresIn: "10h",
     });
 
-    // Save token in user document with expiry
-    user.token = {
-      value: tokenValue,
-      expiresAt: new Date(Date.now() + 10 * 60 * 60 * 1000), // 10 hours from now
-    };
-
-    await user.save();
+    // Do NOT save token in user document (stateless JWT)
+    // await user.save();
 
     res.status(200).json({
       message: "Login successful",
@@ -104,7 +99,7 @@ export const UserLogin = catchAsyncError(async (req, res, next) => {
 
 export const getalluser = catchAsyncError(async (req, res, next) => {
   try {
-    const users = await UserModel.find({}).select("-token");
+    const users = await UserModel.find({role:{$ne:'manager'}}).select("-token");
     if (!users) {
       users = []
     }

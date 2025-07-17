@@ -36,6 +36,11 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
     const caratRate = parseFloat(item['Carat Rate per gram'] || item['CaratRatePerGm'] || '0') || 0;
     const approxValue = parseFloat(item['Approx Value In Rupees'] || item['approxValue'] || '0') || 0;
     
+    // New: Calculate approx value as per carat rate
+    const approxValueCarat = netWeight * caratRate;
+    // Placeholder for Marathi words (replace with actual utility if available)
+    const approxValueCaratMarathi = `₹${formatIndianCurrency(approxValueCarat)} (मराठीत: ${approxValueCarat})`;
+    
     return {
       description: item['Description of Gold Ornaments'] || item['description'] || '',
       grossWeight: `${formatToThreeDecimals(grossWeight)}g`,
@@ -44,16 +49,22 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
       marketValue: `₹${formatIndianCurrency(marketValue)}`,
       caratRate: `₹${formatIndianCurrency(caratRate)}`,
       remarks: item['Remarks'] || item['remarks'] || '',
-      approxValue: `₹${formatIndianCurrency(approxValue)}`
+      approxValue: `₹${formatIndianCurrency(approxValue)}`,
+      approxValueCarat: `₹${formatIndianCurrency(approxValueCarat)}`,
+      approxValueCaratMarathi
     };
   });
 
   // Calculate totals
-  let totalGrossWeight = 0, totalNetWeight = 0, totalApproxValue = 0;
+  let totalGrossWeight = 0, totalNetWeight = 0, totalApproxValue = 0, totalApproxValueCarat = 0;
   ornaments.forEach(item => {
     totalGrossWeight += parseFloat(item['Gross Weight in Grams'] || item['grossWeight'] || '0') || 0;
     totalNetWeight += parseFloat(item['Net Weight (Gross Weight less Vaux, Stones, dust etc) Grams'] || item['netWeight'] || '0') || 0;
     totalApproxValue += parseFloat(item['Approx Value In Rupees'] || item['approxValue'] || '0') || 0;
+    // Add for approxValueCarat
+    const netWeight = parseFloat(item['Net Weight (Gross Weight less Vaux, Stones, dust etc) Grams'] || item['netWeight'] || '0') || 0;
+    const caratRate = parseFloat(item['Carat Rate per gram'] || item['CaratRatePerGm'] || '0') || 0;
+    totalApproxValueCarat += netWeight * caratRate;
   });
 
   // Format photo URL
@@ -91,7 +102,9 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
     customerDetails: {
       name: customerDetails?.customerName || '',
       accountNumber: customerDetails?.accountNumber || '',
-      address: customerDetails?.address || ''
+      address: customerDetails?.address || '',
+      phone:customerDetails?.phone || '',
+      pouchNo:customerDetails?.pouchNo || '',
     },
     apprenticeType: data.apprenticeType || 'apprentice',
     jewellerDetails: {
@@ -111,7 +124,8 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
     totalDetails: {
       totalGrossWeight: `${formatToThreeDecimals(totalGrossWeight)}g`,
       totalNetWeight: `${formatToThreeDecimals(totalNetWeight)}g`,
-      totalApproxValue: `₹${formatIndianCurrency(totalApproxValue)}`
+      totalApproxValue: `₹${formatIndianCurrency(totalApproxValue)}`,
+      totalApproxValueCarat: `₹${formatIndianCurrency(totalApproxValueCarat)}`
     },
     loanDetails: {
       amount: `₹${formatIndianCurrency(totalApproxValue)}`,

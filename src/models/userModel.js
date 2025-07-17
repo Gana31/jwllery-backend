@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: {
-        values: ["admin", "user","Manager"],
+        values: ["admin", "user","manager"],
         message: "Role must be either 'admin' or 'user'",
       },
       default: "worker",
@@ -29,10 +29,6 @@ const UserSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: false, // All new users are inactive by default
-    },
-    token: {
-      value: String,
-      expiresAt: Date,
     },
     location: {
       latitude: { type: Number },

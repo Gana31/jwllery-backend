@@ -190,6 +190,8 @@
                     <p><strong>Name:</strong> <%= customerDetails.name %></p>
                     <p><strong>A/c No.:</strong> <%= customerDetails.accountNumber %></p>
                     <p><strong>Address:</strong> <%= customerDetails.address %></p>
+                    <p><strong>Phone:</strong> <%= customerDetails.phone %></p>
+                    <p><strong>Pouch No.:</strong> <%= customerDetails.pouchNo %></p>
                 </div>
             </div>
 
@@ -226,6 +228,7 @@
                         <th class="value-col">Carat Rate<br>per gm</th>
                         <th class="remarks-col">अन्य<br>Remarks</th>
                         <th class="approx-col">अनुमानित मूल्य<br>Approx Value (₹)</th>
+                        <th class="approx-col">Carat Rate ने अंदाजे किंमत<br>Approx Value as per Carat Rate (₹)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -240,6 +243,7 @@
                         <td><%= item.caratRate %></td>
                         <td><%= item.remarks %></td>
                         <td><%= item.approxValue || '' %></td>
+                        <td><%= item.approxValueCarat || '' %></td>
                     </tr>
                     <% }); %>
                     
@@ -267,6 +271,7 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td><strong><%= totalDetails.totalApproxValue || '' %></strong></td>
+                        <td><strong><%= totalDetails.totalApproxValueCarat || '' %></strong></td>
                     </tr>
                 </tbody>
             </table>
@@ -297,7 +302,6 @@
             <!-- Loan Details (Left) -->
             <div style="flex: 1; padding-right: 20px;">
                 <div class="loan-details" style="margin-top: 0; padding-top: 0; border-top: none;">
-                    <h3 style="margin-top: 0;">Loan Details:</h3>
                     <p><strong>Loan Amount: Rs.</strong> <%= loanDetails.amount %></p>
                     <p><strong>Due Date:</strong> <%= loanDetails.dueDate %></p>
                     <% if (loanDetails.tests && loanDetails.tests.length > 0) { %>
