@@ -77,6 +77,7 @@ function shivkrupaRenderData({ data = {}, appConfig = {}, bankDetails = {}, jewe
     jewellerPhone: appConfig?.companyPhone || get(data, 'jewellerPhone'),
     jewellerEmail: appConfig?.companyEmail || get(data, 'jewellerEmail'),
     jewellerMembershipNo: appConfig?.membershipNo || get(data, 'jewellerMembershipNo'),
+    jewellerAccountNo: bankDetails?.accountNo || get(data, 'jewellerAccountNo'),
     apprenticeType: apprenticeTypeMarathi[get(data, 'apprenticeType')] || get(data, 'apprenticeType'),
     jewellerPhoto,
     jewellerSignature,
