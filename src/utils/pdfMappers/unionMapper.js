@@ -101,8 +101,9 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
       accountNo: customerDetails.accountNumber,
       custId: customerDetails.customerId,
       bagNo: customerDetails.begNo,
-      fatherName: customerDetails.fatherName,
-      age: customerDetails.age,
+      ownerName: appConfig.ownerName,
+      fatherName: appConfig.fatherName,
+      age: appConfig.fatherAge,
       address: customerDetails.address
     },
     ornaments: goldItems,
