@@ -45,6 +45,7 @@ const UserSchema = new mongoose.Schema(
 // Automatically create the default admin user if not present
 UserSchema.statics.ensureAdminUser = async function () {
   const User = this;
+  // Admin
   const adminUser = await User.findOne({ username: "admin" });
   if (!adminUser) {
     const hashedPassword = await bcrypt.hash("admin", 10);
@@ -53,7 +54,19 @@ UserSchema.statics.ensureAdminUser = async function () {
       username: "admin",
       password: hashedPassword,
       role: "admin",
-       isActive: true, // Default admin is active
+      isActive: true, // Default admin is active
+    });
+  }
+  // Manager
+  const managerUser = await User.findOne({ username: "manager" });
+  if (!managerUser) {
+    const hashedPassword = await bcrypt.hash("manager", 10);
+    await User.create({
+      fullName: "manager",
+      username: "manager",
+      password: hashedPassword,
+      role: "manager",
+      isActive: true, // Default manager is active
     });
   }
 };
