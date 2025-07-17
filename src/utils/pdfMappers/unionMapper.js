@@ -77,7 +77,19 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
   
   // Format phone numbers conditionally
   const formattedPhoneNumbers = formatPhoneNumbers(appConfig?.companyPhone, appConfig?.companyMobile);
-  console.log(appConfig);
+  // console.log(appConfig);
+  // Helper to calculate age from date of birth
+  function calculateAge(dob) {
+    if (!dob) return '';
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
   return {
     bankName: data.selectedBank,
     branchName: data.selectedBranch,
@@ -103,7 +115,7 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
       bagNo: customerDetails.begNo,
       ownerName: appConfig.ownerName,
       fatherName: appConfig.fatherName,
-      age: appConfig.fatherAge,
+      age: calculateAge(appConfig.fatherDateOfBirth),
       address: customerDetails.address
     },
     ornaments: goldItems,
