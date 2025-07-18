@@ -135,7 +135,7 @@ export const getAllPdfs = catchAsyncError(async (req, res, next) => {
         customerName = pdf.formData.customer.customerName.trim();
         customerNameSource = 'formData.customer.customerName';
       }
-      console.log(`Customer name picked from: ${customerNameSource} | Value: ${customerName}`);
+      // console.log(`Customer name picked from: ${customerNameSource} | Value: ${customerName}`);
 
       let pdfUrl = null;
       if (pdf.pdfPath) {

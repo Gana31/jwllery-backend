@@ -9,6 +9,6 @@ authRoutes.post("/login", UserLogin);
 authRoutes.post("/AddUser",AddUser)
 authRoutes.get("/getalluser",auth,getalluser)
 authRoutes.put("/updateProfile",auth, updateProfile)
-authRoutes.delete('/userdelete', auth, roleCheck(["admin","Manager"]) ,deleteUserByUsername);
+authRoutes.delete('/userdelete', auth, roleCheck(["admin","manager"]) ,deleteUserByUsername);
 
 export default authRoutes;
