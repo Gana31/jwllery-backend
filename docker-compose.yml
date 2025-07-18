@@ -1,0 +1,13 @@
+
+services:
+  backend:
+    build:
+      context: .
+    container_name: jewellery-backend
+    env_file:
+      - .env   # Now relative to Backend/
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - /var/log/jewellery-backend-logs:/app/logs 
