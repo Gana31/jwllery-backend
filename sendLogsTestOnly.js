@@ -4,11 +4,12 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 
-dotenv.config();
+// Explicitly specify the path to .env
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+dotenv.config({ path: path.join(__dirname, 'env.example') });
 const logsDir = path.join(__dirname, 'logs');
 const today = new Date();
 const todayStr = today.toISOString().split('T')[0];
@@ -41,6 +42,7 @@ const mailOptions = {
 
 async function sendLogs() {
   try {
+    console.log(process.env.EMAIL_USER, process.env.EMAIL_PASS, process.env.EMAIL_TO);
     if (mailOptions.attachments.length === 0) {
       console.log('No log files to send.');
       return;
@@ -48,6 +50,7 @@ async function sendLogs() {
     await transporter.sendMail(mailOptions);
     console.log('Logs sent.');
   } catch (err) {
+    console.log(process.env.EMAIL_USER, process.env.EMAIL_PASS, process.env.EMAIL_TO);
     console.error('Failed to send logs:', err);
   }
 }

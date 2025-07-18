@@ -1,0 +1,4 @@
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 22 * * * cd /app && /usr/local/bin/node -r dotenv/config /app/sendAndCleanupLogs.js >> /var/log/cron.log 2>&1
+
+# An empty line is required at the end of this file for a valid cron file. 
