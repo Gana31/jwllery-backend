@@ -131,6 +131,7 @@ export function maharashtraRenderData({ data, appConfig, bankDetails, jewelleryI
     goldLoanAccountNo,
     officeCifNo,
     status,
+    date:new Date().toLocaleDateString('en-GB'),
     totalGrossWeight,
     eligibleNetWeight: totalNetWeightExcludingStones,
     sanctionedAmount: formattedSanctionedAmount,

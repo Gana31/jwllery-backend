@@ -99,28 +99,43 @@ export const getAllPdfs = catchAsyncError(async (req, res, next) => {
 
       // Extract customer name with robust fallback logic
       let customerName = 'N/A';
+      let customerNameSource = 'none';
+      // Prefer renderData.customerDetails.customerName if available and not empty
       if (
+        pdf.renderData &&
+        pdf.renderData.customerDetails &&
+        typeof pdf.renderData.customerDetails.customerName === 'string' &&
+        pdf.renderData.customerDetails.customerName.trim() !== ''
+      ) {
+        customerName = pdf.renderData.customerDetails.customerName.trim();
+        customerNameSource = 'renderData.customerDetails.customerName';
+      } else if (
         customerDetails &&
         typeof customerDetails.customerName === 'string' &&
         customerDetails.customerName.trim() !== ''
       ) {
         customerName = customerDetails.customerName.trim();
+        customerNameSource = 'formData.customerDetails.customerName';
       } else if (
         typeof pdf.formData.customerName === 'string' &&
         pdf.formData.customerName.trim() !== ''
       ) {
         customerName = pdf.formData.customerName.trim();
+        customerNameSource = 'formData.customerName';
       } else if (
         typeof pdf.formData.customer?.name === 'string' &&
         pdf.formData.customer.name.trim() !== ''
       ) {
         customerName = pdf.formData.customer.name.trim();
+        customerNameSource = 'formData.customer.name';
       } else if (
         typeof pdf.formData.customer?.customerName === 'string' &&
         pdf.formData.customer.customerName.trim() !== ''
       ) {
         customerName = pdf.formData.customer.customerName.trim();
+        customerNameSource = 'formData.customer.customerName';
       }
+      console.log(`Customer name picked from: ${customerNameSource} | Value: ${customerName}`);
 
       let pdfUrl = null;
       if (pdf.pdfPath) {
