@@ -73,6 +73,10 @@ const AppConfigSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    ownerArea: {
+      type: String,
+      default: "Chakan",
+    },
   },
   {
     timestamps: true,

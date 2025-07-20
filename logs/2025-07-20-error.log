@@ -1,0 +1,1 @@
+{"level":"error","message":"HTTP Request Error","metadata":{"duration":"25ms","ip":"192.168.1.3","method":"DELETE","statusCode":404,"url":"/pdf/687d4191fc7dab6981ff162b","userAgent":"okhttp/4.12.0","userId":"687971b3a4a976da101df065"},"service":"jewellery-backend","timestamp":"2025-07-21 01:10:04"}

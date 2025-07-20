@@ -96,6 +96,7 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
 
   return {
     bankDetails: {
+      bankName: bankDetails?.bankName || '',
       branch: data.selectedBranch,
       logoUrl: bankDetails?.logoPath ? `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${bankDetails.logoPath.replace(/^\//, '')}` : ''
     },
@@ -132,6 +133,28 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
       dueDate: dueDate,
       tests: tests
     },
-    signatureUrl: signatureUrl
+    signatureUrl: signatureUrl,
+    analytics: {
+      bankName: bankDetails?.bankName || 'Baroda',
+      branchName: data.selectedBranch || '',
+      bankLogo: bankDetails?.logoPath ? `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${bankDetails.logoPath.replace(/^\//, '')}` : '',
+      customerName: customerDetails?.customerName || '',
+      phone: customerDetails?.phone || '',
+      accountNumber: customerDetails?.accountNumber || '',
+      punchNo: customerDetails?.pouchNo || '',
+      items: (ornaments || []).map(item => ({
+        description: item['Description of Gold Ornaments'] || item['description'] || '',
+        units: item['No Of Units'] || item['units'] || '',
+        grossWeight: item['Gross Weight in Grams'] || item['grossWeight'] || '',
+        netWeight: item['Net Weight (Gross Weight less Vaux, Stones, dust etc) Grams'] || item['netWeight'] || '',
+        approxValue: item['Approx Value In Rupees'] || item['approxValue'] || ''
+      })),
+      totalUnits: (ornaments || []).reduce((sum, item) => sum + (parseFloat(item['No Of Units'] || item['units'] || 0) || 0), 0).toFixed(2),
+      totalGrossWeight: totalGrossWeight.toString(),
+      totalNetWeight: totalNetWeight.toString(),
+      totalValue: formatIndianCurrency(totalApproxValue),
+      jewelleryImage: photoUrl,
+      date: new Date().toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' })
+    }
   };
 } 

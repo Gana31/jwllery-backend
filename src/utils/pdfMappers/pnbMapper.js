@@ -159,5 +159,27 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     jewelleryImageText: 'JEWELLERY IMAGE',
     jewelleryImageAlt: 'Jewellery Image',
     signatureUrl,
+    analytics: {
+      bankName: bankDetails?.bankName || 'PNB',
+      branchName: data.selectedBranch || '',
+      bankLogo: bankDetails?.logoPath ? `${s3BaseUrl}/${bankDetails.logoPath.replace(/^\//, '')}` : '',
+      customerName: customerDetails?.customerName || '',
+      phone: customerDetails?.phone || '',
+      accountNumber: customerDetails?.accountNumber || '',
+      punchNo: customerDetails?.pouchNo || '',
+      items: goldItems.map(item => ({
+        description: item.description,
+        units: item.units,
+        grossWeight: item.grossWeight,
+        netWeight: item.netWeight,
+        approxValue: item.value
+      })),
+      totalUnits: formatToTwoDecimals(totalUnits),
+      totalGrossWeight: formatToThreeDecimals(totalGrossWeight),
+      totalNetWeight: formatToThreeDecimals(totalNetWeight),
+      totalValue: formatIndianCurrency(totalValue),
+      jewelleryImage: jewelleryImage,
+      date: now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' })
+    }
   };
 } 

@@ -62,6 +62,19 @@ export const deleteFileFromS3 = async (key) => {
     throw new Error("Failed to delete old image from S3");
   }
 };
+
+export const deleteFromS3 = async (key) => {
+  const config = await getAppConfig();
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+    region: process.env.AWS_BUCKET_REGION,
+  });
+  await s3.deleteObject({
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: key,
+  }).promise();
+};
 // Upload image
 export const uploadImageToS3 = async (customerName, file) => {
   const config = await getAppConfig();

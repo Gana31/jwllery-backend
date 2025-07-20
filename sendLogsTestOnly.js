@@ -42,7 +42,7 @@ const mailOptions = {
 
 async function sendLogs() {
   try {
-    console.log(process.env.EMAIL_USER, process.env.EMAIL_PASS, process.env.EMAIL_TO);
+
     if (mailOptions.attachments.length === 0) {
       console.log('No log files to send.');
       return;
@@ -50,7 +50,7 @@ async function sendLogs() {
     await transporter.sendMail(mailOptions);
     console.log('Logs sent.');
   } catch (err) {
-    console.log(process.env.EMAIL_USER, process.env.EMAIL_PASS, process.env.EMAIL_TO);
+   
     console.error('Failed to send logs:', err);
   }
 }

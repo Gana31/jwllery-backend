@@ -17,7 +17,7 @@ const formatPhoneNumbers = (phone, mobile) => {
 export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments ,bankFields}) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
-  
+
   // Indian currency formatter
   const formatIndianCurrency = (value) => {
     const num = parseFloat(value) || 0;
@@ -81,6 +81,7 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     customerName: customerDetails?.customerName || '',
     address: customerDetails?.address || '',
     mobile: customerDetails?.phone || '',
+    bankLogo:bankDetails?.logoPath ? `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${bankDetails.logoPath.replace(/^\//, '')}` : '',
     accountNumber: customerDetails?.accountNumber || '',
     pouchNumber: customerDetails?.pouchNo || '',
     appraisalDate: now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' }),
@@ -109,5 +110,27 @@ export function sbiRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     bankManagerName,
     appraisalCharges,
     signatureUrl,
+    analytics: {
+      bankName: bankDetails?.bankName || 'SBI',
+      bankLogo:bankDetails?.logoPath ? `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${bankDetails.logoPath.replace(/^\//, '')}` : '',
+      branchName: data.selectedBranch,
+      customerName: customerDetails?.customerName || '',
+      phone: customerDetails?.phone || '',
+      accountNumber: customerDetails?.accountNumber || '',
+      punchNo: customerDetails?.pouchNo || '',
+      items: goldItems.map(item => ({
+        description: item.description,
+        units: item.units,
+        grossWeight: item.grossWeight,
+        netWeight: item.netWeight,
+        approxValue: item.approxValue
+      })),
+      totalUnits: formatToTwoDecimals(totalUnits),
+      totalGrossWeight: formatToThreeDecimals(totalGrossWeight),
+      totalNetWeight: formatToThreeDecimals(totalNetWeight),
+      totalValue: formatIndianCurrency(totalApproxValue),
+      jewelleryImage: jewelryImage,
+      date: now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' })
+    }
   };
 } 

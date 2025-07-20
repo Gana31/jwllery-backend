@@ -5,6 +5,7 @@ import path from "path";
 import puppeteer from "puppeteer";
 import AppraisalModel from "../models/AppraisalModel.js";
 import moment from 'moment-timezone';
+import { deleteFromS3 } from '../utils/s3.js';
 
 // Sanitize filename for file system compatibility
 const sanitizeFileName = (name) => {
@@ -308,5 +309,24 @@ export const downloadPdf = catchAsyncError(async (req, res, next) => {
       }
     }
   );
+});
+
+export const deletePdf = catchAsyncError(async (req, res) => {
+  const { id } = req.params;
+  const doc = await AppraisalModel.findById(id);
+  if (!doc) {
+    return res.status(404).json({ success: false, message: 'Document not found' });
+  }
+  // Delete jewellery image from S3
+  if (doc.jewelleryImagePath && typeof doc.jewelleryImagePath === 'string' && doc.jewelleryImagePath.trim() !== '') {
+    await deleteFromS3(doc.jewelleryImagePath);
+  }
+  // Delete PDF from S3
+  if (doc.pdfPath) {
+    await deleteFromS3(doc.pdfPath);
+  }
+  // Delete document from DB
+  await AppraisalModel.findByIdAndDelete(id);
+  res.json({ success: true, message: 'PDF and associated image deleted successfully' });
 });
 

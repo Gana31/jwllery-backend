@@ -87,6 +87,28 @@ function shivkrupaRenderData({ data = {}, appConfig = {}, bankDetails = {}, jewe
     totalNetWeight: formatNumber(totalNetWeight),
     totalApproxValue: formatCurrency(totalApproxValue),
     totalFinalLoanValue: formatCurrency(totalFinalLoanValue),
+    analytics: {
+      bankName: bankDetails?.bankName || 'Shivkrupa',
+      branchName: get(data, 'selectedBranch') || get(bankDetails, 'selectedBranch'),
+      bankLogo: bankDetails?.logoPath ? `${s3BaseUrl}/${bankDetails.logoPath.replace(/^\//, '')}` : '',
+      customerName: customerDetails?.customerName || get(data, 'customerName'),
+      phone: customerDetails?.phone || get(data, 'phone'),
+      accountNumber: customerDetails?.accountNumber || get(data, 'accountNumber'),
+      punchNo: customerDetails?.pouchNumber || get(data, 'pouchNumber'),
+      items: items.map(item => ({
+        description: item.description,
+        units: item.units,
+        grossWeight: item.grossWeight,
+        netWeight: item.netWeight,
+        approxValue: item.approxValue
+      })),
+      totalUnits: formatNumber(totalUnits),
+      totalGrossWeight: formatNumber(totalGrossWeight),
+      totalNetWeight: formatNumber(totalNetWeight),
+      totalValue: formatCurrency(totalApproxValue),
+      jewelleryImage: jewellerPhoto,
+      date: new Date().toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' })
+    }
   };
 }
 

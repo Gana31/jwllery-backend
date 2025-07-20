@@ -116,7 +116,8 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
       ownerName: appConfig.ownerName,
       fatherName: appConfig.fatherName,
       age: calculateAge(appConfig.fatherDateOfBirth),
-      address: customerDetails.address
+      address: customerDetails.address,
+      ownerArea: appConfig.ownerArea
     },
     ornaments: goldItems,
     ornamentImage:  jewelleryImagePath && jewelleryImagePath.trim() !== '' && jewelleryImagePath.trim() !== 'null' && jewelleryImagePath.trim() !== 'undefined' && jewelleryImagePath.trim() !== '' && !jewelleryImagePath.includes('placeholder') && !jewelleryImagePath.includes('default') ? `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${jewelleryImagePath?.replace(/^\//, '')}` : undefined ,
@@ -148,5 +149,27 @@ export function unionRenderData({ data, appConfig, bankDetails, jewelleryImagePa
     selectedTests: selectedTests,
     testDate: now.toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' }),
     signatureUrl,
+    analytics: {
+      bankName: data.selectedBank,
+      branchName: data.selectedBranch,
+      bankLogo: appConfig?.s3BaseUrl && bankDetails?.logoPath ? `${appConfig.s3BaseUrl.replace(/\/$/, '')}/${bankDetails.logoPath.replace(/^\//, '')}` : '',
+      customerName: customerDetails.customerName,
+      phone: customerDetails.phone,
+      accountNumber: customerDetails.accountNumber,
+      punchNo: customerDetails.bagNo || customerDetails.begNo || '',
+      items: goldItems.map(item => ({
+        description: item.description,
+        units: item.units,
+        grossWeight: item.grossWeight,
+        netWeight: item.netWeight,
+        approxValue: item.value
+      })),
+      totalUnits: formatToTwoDecimals(totalUnits),
+      totalGrossWeight: formatToThreeDecimals(totalGrossWeight),
+      totalNetWeight: formatToThreeDecimals(totalNetWeight),
+      totalValue: formatIndianCurrency(totalValue),
+      jewelleryImage: jewelleryImagePath && jewelleryImagePath.trim() !== '' && jewelleryImagePath.trim() !== 'null' && jewelleryImagePath.trim() !== 'undefined' && jewelleryImagePath.trim() !== '' && !jewelleryImagePath.includes('placeholder') && !jewelleryImagePath.includes('default') ? `${appConfig?.s3BaseUrl?.replace(/\/$/, '')}/${jewelleryImagePath?.replace(/^\//, '')}` : undefined,
+      date: now.toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' })
+    }
   };
 } 

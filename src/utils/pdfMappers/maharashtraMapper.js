@@ -149,6 +149,27 @@ export function maharashtraRenderData({ data, appConfig, bankDetails, jewelleryI
     jewellerPhotoUrl : jewelleryPhotoUrl || '',
     appraisalDate : bankFields.dateOfSanction || '',
     userAddress,
-
+    analytics: {
+      bankName: bankDetails?.bankName || 'Maharashtra',
+      branchName: branchName,
+      bankLogo: bankDetails?.logoPath ? `${s3BaseUrl}/${bankDetails.logoPath.replace(/^\//, '')}` : '',
+      customerName: customerDetails?.customerName || '',
+      phone: customerDetails?.phone || '',
+      accountNumber: customerDetails?.accountNumber || '',
+      punchNo: customerDetails?.pouchNo || '',
+      items: (ornaments || []).map(item => ({
+        description: item.description,
+        units: item.units || '',
+        grossWeight: item.grossWeight || '',
+        netWeight: item.netWeight || '',
+        approxValue: item.approxValue || ''
+      })),
+      totalUnits: (ornaments || []).reduce((sum, item) => sum + (parseFloat(item.units || 0) || 0), 0).toFixed(2),
+      totalGrossWeight: totalGrossWeight,
+      totalNetWeight: totalNetWeightExcludingStones,
+      totalValue: formattedTotalMarketValue1,
+      jewelleryImage: jewelleryPhotoUrl,
+      date: new Date().toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' })
+    }
   };
 } 
