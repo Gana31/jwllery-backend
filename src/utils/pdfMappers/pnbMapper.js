@@ -19,7 +19,7 @@ const formatPhoneNumbers = (phone, mobile) => {
 export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields }) {
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
-  
+    console.log(bankFields);
   // Indian currency formatter
   const formatIndianCurrency = (value) => {
     const num = parseFloat(value) || 0;
@@ -117,7 +117,7 @@ export function pnbRenderData({ data, appConfig, bankDetails, jewelleryImagePath
     accountNoCustomer: customerDetails?.accountNumber || '',
     punchNo: customerDetails?.pouchNo || '',
     apprenticeType: data.apprenticeType,
-    goldRate: bankFields.goldRate || '',
+    goldRate: bankFields.goldRate || bankFields.goldAsPerMarketRate || '',
     tableHeaders: {
       srNo: 'Sr No',
       description: 'Description of Jewels/Ornaments assorted',

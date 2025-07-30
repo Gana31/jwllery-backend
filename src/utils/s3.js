@@ -108,8 +108,6 @@ export const uploadPdfToS3 = async (customerName, file) => {
     Body: file.buffer,
     ContentType: "application/pdf",
   };
-  console.log(process.env.AWS_ACCESS_KEY, process.env.AWS_SECRET_KEY, process.env.AWS_BUCKET_REGION);
-
 
   await withExponentialBackoff(() => s3.upload(uploadParams).promise());
   return {
