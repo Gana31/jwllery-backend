@@ -47,7 +47,7 @@ jobs:
             docker system prune --force
 
             # Run the new Docker container
-            docker run -d --name testing-container --env-file testing/config.env -p 8000:8000 --restart always pradyumnaquantum/gold
+            docker run -d --name testing-container --env-file testing/gold.env -p 8000:8000 --restart always pradyumnaquantum/gold
 
           
             
