@@ -13,9 +13,10 @@ const formatPhoneNumbers = (phone, mobile) => {
   }
 };
 
+
 export function maharashtraRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields }) {
 
- 
+//  console.log('maharashtraRenderData called with data: ',ornaments,' ornaments, ',bankFields ,' bankFields');
     const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
   const formatIndianCurrency = (value) => {
@@ -65,8 +66,8 @@ export function maharashtraRenderData({ data, appConfig, bankDetails, jewelleryI
       grossWeight: item.grossWeight,
       netWeightExcludingStones: item.netWeight || '', // netWeight from frontend
       purity: item.carat || '', // carat from frontend
-      marketValue1: (netWeight * caratRate).toFixed(2), // calculated value
-      marketValue2: (netWeight * caratRatePerGm).toFixed(2), // calculated value
+      marketValue1: caratRate.toFixed(2), // calculated value
+      marketValue2: caratRatePerGm.toFixed(2), // calculated value
     };
   });
 

@@ -14,7 +14,17 @@ const formatPhoneNumbers = (phone, mobile) => {
   }
 };
 
+
+function calculateDueDate() {
+  const today = new Date();
+  const nextYear = new Date(today);
+  nextYear.setFullYear(today.getFullYear() + 1);
+  nextYear.setDate(nextYear.getDate() - 1); // subtract 1 day
+  return nextYear.toLocaleDateString('en-GB'); // format as DD/MM/YYYY
+}
+
 export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields }) {
+  // console.log('barodaRenderData called with data: ', ornaments, ' ornaments, ', bankFields, ' bankFields');
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
   
@@ -83,7 +93,7 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
 
   // Parse bank details
   const parsedBankDetails = typeof data.bankDetails === 'string' ? JSON.parse(data.bankDetails) : data.bankDetails || {};
-  const dueDate = parsedBankDetails.dueDate ? new Date(parsedBankDetails.dueDate).toLocaleDateString('en-GB') : '';
+  const dueDate = calculateDueDate();
 
   // Format tests - only show if bank model has tests enabled
   const tests = (bankDetails?.tests === true && selectedTests && selectedTests.length > 0) ? selectedTests : [];
@@ -131,7 +141,8 @@ export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImageP
     loanDetails: {
       amount: `₹${formatIndianCurrency(totalApproxValue)}`,
       dueDate: dueDate,
-      tests: tests
+      tests: tests,
+      date: new Date().toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, day: '2-digit', month: '2-digit', year: 'numeric' })
     },
     signatureUrl: signatureUrl,
     analytics: {

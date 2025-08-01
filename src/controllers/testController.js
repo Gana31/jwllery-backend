@@ -200,6 +200,7 @@ export const renderSbiTest = (req, res) => {
 
 export const renderBarodaTemplateTest = (req, res) => {
   const data = {
+    signatureUrl: getFullUrl(company.signature),
     bankDetails: { 
       branch: "Hal chinchwad",
       logoUrl: "https://ganeshtest2.s3.ap-south-1.amazonaws.com/banklogos/bankofbaroda/1b7506ae-b7f7-4ca7-b386-72f1d7c3715e.png"
@@ -273,6 +274,7 @@ export const renderBankOfMaharastraTest = (req, res) => {
       sanctioned: true,
       rejected: false,
       sanctionedAmount: '95000',
+      
     },
     totalGrossWeight: '30.5',
     eligibleNetWeight: '29.5',
@@ -286,6 +288,17 @@ export const renderBankOfMaharastraTest = (req, res) => {
     bankLogoUrl: 'https://ganeshtest2.s3.ap-south-1.amazonaws.com/385-3856570_sbi-logo-%5Bstate-bank-of-india-group%5D-vector-eps-free-sbi-logo+(1).png',
     requestedBy: 'Rahul Sharma', // Always matches borrowerName
     jewellerPhotoUrl: getFullUrl(company.companyLogo),
+    date: 'afsdf',
+    phone: '9876543210',
+    email: 'abc@jewellers.com',
+    address: '123 Main St',
+    accountNumber: 'ACC123456',
+    iovMembershipNumber: 'IOV789',
+    logoUrl: 'https://.com/40x40/000/fff.png&text=Logo',
+    logoName: 'ABC Jewellers',
+    typeOfBusiness: 'Goldsmith and Valuer',
+    pouchNo : 'PCH001',
+    requestedAmount :"dasd"
   };
   // Calculate totals for the table
   const totalGrossWeight = data.jewelryItems.reduce((sum, item) => sum + parseFloat(item.grossWeight), 0).toFixed(2);
