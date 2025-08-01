@@ -1,53 +1,73 @@
-name: deploy
+name: Node.js CI + Auto Deploy to EC2
 
 on:
-  push: 
-    branches:
-      - main
+  push:
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted  # Your GitHub Actions runner on EC2
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Login to Docker Hub
-        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        env:  
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push Docker image
+      - name: Sync code to EC2 (excluding .git and others)
         run: |
-          docker build -t pradyumnaquantum/gold .
-          docker push pradyumnaquantum/gold
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.DS_Store' \
+            --exclude='.env' \
+            $GITHUB_WORKSPACE/ /home/ubuntu/jwllery-backend/
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: SSH into EC2 instance
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_IP }}
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }} 
-          script: |
-            ssh i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_IP }}
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            # Pull the latest Docker image from Docker Hub
-            docker pull pradyumnaquantum/gold
+      - name: Copy .env if needed
+        run: |
+          cp /home/ubuntu/envs/jwllery-backend.env /home/ubuntu/jwllery-backend/.env || echo ".env file not found, skipping..."
 
-            # Stop and remove the existing Docker container (if any)
-            docker stop testing-container || true
-            docker rm testing-container || true
-            docker container prune --force
-            docker image prune --force
-            docker system prune --force
+      - name: Check if dependencies changed
+        id: deps
+        run: |
+          cd /home/ubuntu/jwllery-backend
 
-            # Run the new Docker container
-            docker run -d --name testing-container --env-file testing/gold.env -p 8000:8000 --restart always pradyumnaquantum/gold
+          if [ -f .package-lock.hash ]; then
+            PREV_HASH=$(cat .package-lock.hash)
+          else
+            PREV_HASH=""
+          fi
 
-          
-            
+          CURR_HASH=$(sha256sum package-lock.json | awk '{ print $1 }')
+          echo "Previous hash: $PREV_HASH"
+          echo "Current  hash: $CURR_HASH"
+
+          if [ "$PREV_HASH" != "$CURR_HASH" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo $CURR_HASH > .package-lock.hash
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies if changed
+        if: steps.deps.outputs.changed == 'true'
+        run: |
+          cd /home/ubuntu/jwllery-backend
+          npm install --omit=dev
+
+      - name: Build project (if applicable)
+        run: |
+          cd /home/ubuntu/jwllery-backend
+          npm run build --if-present
+
+      - name: Run tests (optional)
+        run: |
+          cd /home/ubuntu/jwllery-backend
+          npm test || echo "No tests or tests failed, continuing..."
+
+      - name: Restart PM2 process
+        run: |
+          cd /home/ubuntu/jwllery-backend
+          pm2 reload jewellery-api || pm2 start index.js --name jewellery-api
+
+      - name: Save PM2 process list
+        run: pm2 save
