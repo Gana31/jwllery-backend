@@ -62,11 +62,11 @@
         }
         
         .left-column {
-            width: 45%;
+            width: 35%;
         }
         
         .right-column {
-            width: 45%;
+            width: 20%;
         }
         
         .jeweller-details {
@@ -227,25 +227,34 @@
             <div>Bank of Maharashtra</div>
             <div><%= branchName %> Branch</div>
         </div>
+        <div >
+            <div class="form-row">
+                <label>Sir,</label>
+            </div>
+            <div>
+                <label>Name of Borrower:</label>
+                <b><%= borrowerName %></b>
+            </div>
+           <div>
+            <label>CIF NO:</label>
+            <b><%= cifNumber %></b>
+           </div> 
+           <div>
+            <label>Phone:</label>
+            <b><%= phone %></b>
+           </div>
+           <div>
+            <label>Pouch No.:</label>
+            <b><%= pouchNo %></b>
+           </div>
+           
+        </div>
     </div>
     
     <!-- Line 5: Borrower details -->
     <div class="form-section">
-        <div class="form-row">
-            <label>Sir,</label>
-        </div>
-        <div class="form-row">
-            <label>Name of Borrower:</label>
-            <b><%= borrowerName %></b>
-            <span style="margin-left: 30px;"><label>CIF NO:</label></span>
-            <b><%= cifNumber %></b>
-            <span style="margin-left: 30px;"><label>Phone:</label></span>
-            <b><%= phone %></b>
-            <span style="margin-left: 30px;"><label>Pouch No.:</label></span>
-            <b><%= pouchNo %></b>
-            <span style="margin-left: 30px;"><label>Amount:</label></span>
-            <b><%= requestedAmount %></b>
-        </div>
+      
+       
     </div>
     
    

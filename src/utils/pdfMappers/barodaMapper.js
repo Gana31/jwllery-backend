@@ -25,6 +25,7 @@ function calculateDueDate() {
 
 export function barodaRenderData({ data, appConfig, bankDetails, jewelleryImagePath, selectedTests, selectedValuation, customerDetails, ornaments, bankFields }) {
   // console.log('barodaRenderData called with data: ', ornaments, ' ornaments, ', bankFields, ' bankFields');
+  console.log("selectedValuation: ", selectedValuation);
   const formatToTwoDecimals = value => (parseFloat(value) || 0).toFixed(2);
   const formatToThreeDecimals = value => (parseFloat(value) || 0).toFixed(3);
   
